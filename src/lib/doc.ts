@@ -34,6 +34,32 @@ export function getWorldY(world: WorldIdentifier): WorldY {
       "wss://y-webrtc-signaling-eu.herokuapp.com",
       "wss://y-webrtc-signaling-us.herokuapp.com",
     ],
+    peerOpts: {
+      config: {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:global.stun.twilio.com:3478?transport=udp" },
+          {
+            urls: "stun:relay.metered.ca:80",
+          },
+          {
+            urls: "turn:relay.metered.ca:80",
+            username: "7aec233ea46fa835147308ae",
+            credential: "c0eTB5pqj9vOxhii",
+          },
+          {
+            urls: "turn:relay.metered.ca:443",
+            username: "7aec233ea46fa835147308ae",
+            credential: "c0eTB5pqj9vOxhii",
+          },
+          {
+            urls: "turn:relay.metered.ca:443?transport=tcp",
+            username: "7aec233ea46fa835147308ae",
+            credential: "c0eTB5pqj9vOxhii",
+          },
+        ],
+      },
+    },
   });
   const idbProvider = new IndexeddbPersistence(world.room, ydoc);
   const worldY = { ydoc, webrtcProvider: provider };
