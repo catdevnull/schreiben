@@ -32,7 +32,7 @@
 
 <a class="no-color" href={routes.ChooseWorld}>🠔 Elegir otro mundo</a>
 {#await docPromise then doc}
-  <Editor doc={doc.doc} />
+  <Editor doc={doc.doc} worldY={doc.worldY} />
 {:catch error}
   {error}
   <a href={routes.ChooseWorld}>Volver al inicio</a>

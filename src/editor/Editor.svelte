@@ -22,8 +22,10 @@
   import MenuBar from "./MenuBar.svelte";
   import { placeholderPlugin } from "./upload";
   import { baseKeymap } from "./keymap";
+  import type { WorldY } from "../lib/doc";
 
   export let doc: XmlFragment;
+  export let worldY: WorldY;
 
   let wrapperEl: HTMLElement;
 
