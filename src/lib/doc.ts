@@ -1,5 +1,6 @@
 import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
+import { IndexeddbPersistence } from "y-indexeddb";
 import { nanoid } from "nanoid";
 
 export type WorldIdentifier = {
@@ -34,6 +35,7 @@ export function getWorldY(world: WorldIdentifier): WorldY {
       "wss://y-webrtc-signaling-us.herokuapp.com",
     ],
   });
+  const idbProvider = new IndexeddbPersistence(world.room, ydoc);
   const worldY = { ydoc, webrtcProvider: provider };
   worldYCache[world.room] = worldY;
   return worldY;

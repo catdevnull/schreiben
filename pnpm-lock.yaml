@@ -24,6 +24,7 @@ specifiers:
   tslib: ^2.5.0
   typescript: ^4.9.3
   vite: ^4.1.0
+  y-indexeddb: ^9.0.9
   y-prosemirror: ^1.2.0
   y-protocols: ^1.0.5
   y-webrtc: ^10.2.4
@@ -34,6 +35,7 @@ dependencies:
   nanoid: 4.0.1
   navaid: 1.2.0
   regexparam: 2.0.1
+  y-indexeddb: 9.0.9_yjs@13.5.48
   y-prosemirror: 1.2.0_vhy2hiocjqydif5dwvxgfnpihi
   y-protocols: 1.0.5
   y-webrtc: 10.2.4
@@ -1194,6 +1196,15 @@ packages:
         optional: true
     dev: false
     optional: true
+
+  /y-indexeddb/9.0.9_yjs@13.5.48:
+    resolution: {integrity: sha512-GcJbiJa2eD5hankj46Hea9z4hbDnDjvh1fT62E5SpZRsv8GcEemw34l1hwI2eknGcv5Ih9JfusT37JLx9q3LFg==}
+    peerDependencies:
+      yjs: ^13.0.0
+    dependencies:
+      lib0: 0.2.63
+      yjs: 13.5.48
+    dev: false
 
   /y-prosemirror/1.2.0_vhy2hiocjqydif5dwvxgfnpihi:
     resolution: {integrity: sha512-t3uxuX4HIkb1GNt8jV+dplRbNH2OmQD/BNeCCbjLD3Mq0o6JEXxHedv58ZIPFDE6ma24jljlL+u8pGvN6B37XQ==}
