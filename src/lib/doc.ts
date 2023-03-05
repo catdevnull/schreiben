@@ -19,7 +19,12 @@ export function generateNewWorld(): WorldIdentifier {
   };
 }
 
+// when creating a webrtc provider for a second time in the same room, it freaks out.
+// cache the previous doc and return that instead
+let worldYCache: { [key: string]: WorldY } = {};
+
 export function getWorldY(world: WorldIdentifier): WorldY {
+  if (worldYCache[world.room]) return worldYCache[world.room];
   const ydoc = new Y.Doc();
   const provider = new WebrtcProvider(world.room, ydoc, {
     password: world.password,
@@ -29,7 +34,9 @@ export function getWorldY(world: WorldIdentifier): WorldY {
       "wss://y-webrtc-signaling-us.herokuapp.com",
     ],
   });
-  return { ydoc, webrtcProvider: provider };
+  const worldY = { ydoc, webrtcProvider: provider };
+  worldYCache[world.room] = worldY;
+  return worldY;
 }
 
 export function getWorldPage(ydoc: Y.Doc, pageId: string): Y.XmlFragment {

@@ -23,11 +23,6 @@
   }
 
   $: docPromise = loadDoc(worldId, pageId);
-
-  onDestroy(async () => {
-    const doc = await docPromise;
-    doc.worldY.webrtcProvider.destroy();
-  });
 </script>
 
 <a class="no-color" href={routes.ChooseWorld}>🠔 Elegir otro mundo</a>
