@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
   import type { XmlFragment } from "yjs";
+  import { inject } from "regexparam";
   import Editor from "../editor/Editor.svelte";
   import { getWorldPage, getWorldY, type WorldY } from "../lib/doc";
   import { routes } from "../lib/routes";
@@ -25,7 +25,19 @@
   $: docPromise = loadDoc(worldId, pageId);
 </script>
 
-<a class="no-color" href={routes.ChooseWorld}>🠔 Elegir otro mundo</a>
+<nav>
+  <details>
+    <summary>Opciones</summary>
+    <ul>
+      <li><a href={routes.ChooseWorld}>🠔 Elegir otro mundo</a></li>
+      <li>
+        <a href={inject(routes.ShareWorld, { worldId })}
+          >📱 Agregar mundo a otro dispositivo</a
+        >
+      </li>
+    </ul>
+  </details>
+</nav>
 {#await docPromise then doc}
   <Editor doc={doc.doc} worldY={doc.worldY} />
 {:catch error}
@@ -34,7 +46,7 @@
 {/await}
 
 <style>
-  .no-color {
+  nav a {
     color: inherit;
   }
 </style>
