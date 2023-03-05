@@ -1,0 +1,194 @@
+@import "prosemirror-view/style/prosemirror.css";
+
+.editor {
+  position: relative;
+}
+
+.editor *::before,
+.editor *::after {
+  box-sizing: border-box;
+}
+
+/* para ver los cambios con el sobrerayado */
+::selection,
+::-moz-selection {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.editor .menubar {
+  position: sticky;
+  top: 0px;
+  z-index: 69;
+  background: white;
+  border-bottom: 1px solid #bbb;
+}
+
+.editor .menubar .separator {
+  border-right: 2px solid #bbb;
+  margin: 0 0.5rem;
+}
+
+.editor .menubar button {
+  appearance: none;
+  background: none;
+  border: none;
+  border-radius: 2px;
+  line-height: 1;
+  padding: 0.4em 0.6em;
+  margin: 0.2em;
+  transition: all 0.2s;
+}
+
+.editor .menubar button.active {
+  background: #ddd;
+}
+
+.editor .menubar button:hover {
+  background: #eee;
+}
+
+.editor .menubar button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.editor .bubble {
+  display: flex !important;
+  position: absolute;
+  z-index: 420;
+  transform: translateX(-50%);
+  background: black;
+  color: white;
+  border-radius: 5px;
+  padding: 0rem;
+  margin-bottom: 0.5rem;
+
+  visibility: visible;
+  opacity: 1;
+
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.editor .bubble[hidden] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.editor .bubble input {
+  appearance: none;
+  background: none;
+  color: inherit;
+  border: none;
+  font-size: 1.25em;
+}
+
+.editor .bubble .separator {
+  border-right: 1px solid #777;
+  margin: 0 0.5rem;
+}
+
+.editor .bubble button {
+  appearance: none;
+  background: none;
+  color: inherit;
+  border: none;
+  border-radius: 2px;
+  padding: 0.3em;
+  margin: 0.2em;
+  width: 1.8rem;
+  height: 1.8rem;
+  font-size: 1em;
+  line-height: 1;
+
+  transition: background 0.2s;
+}
+.editor .bubble button:hover {
+  background: #333;
+}
+.editor .bubble button.active {
+  background: #555;
+}
+
+.editor .bubble .color-button {
+  padding: 0.4em;
+}
+.editor .bubble .color {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+}
+
+.editor .bubble p {
+  margin: 0;
+}
+
+.ProseMirror {
+  width: 100%;
+  padding: 0.5em;
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+.ProseMirror:focus {
+  outline: lightskyblue solid;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+}
+
+.ProseMirror figure {
+  margin: 0;
+  padding: 0.5em 2em;
+}
+.ProseMirror figure figcaption::before {
+  content: "Descripción: ";
+  color: #666;
+}
+.ProseMirror .ProseMirror-multimedia-placeholder {
+  margin-bottom: 0.5em;
+}
+.ProseMirror .ProseMirror-multimedia-placeholder::before {
+  content: "Clickea aquí para subir una imágen, audio o documento.";
+  color: #666;
+}
+
+.ProseMirror blockquote {
+  background-color: #f5f5f5;
+  border-left: 5px solid #dbdbdb;
+  padding: 1.25em 1.5em;
+  margin: 0.5em;
+}
+
+.ProseMirror-menubar {
+  position: sticky;
+  top: 0px;
+  z-index: 69;
+  background: white;
+  border-bottom: 1px solid #bbb;
+}
+
+.ProseMirror-menubar-separator {
+  border-right: 2px solid #bbb;
+  margin: 0 0.5rem;
+}
+
+.ProseMirror-menubar-button {
+  appearance: none;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  padding: 0.4em 0.6em;
+  margin: 0.2em;
+  transition: all 0.2s;
+}
+
+.ProseMirror-menubar-button-active {
+  background: #ddd;
+}
+
+.ProseMirror-menubar-button:hover {
+  background: #eee;
+}
