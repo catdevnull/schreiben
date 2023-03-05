@@ -34,6 +34,7 @@
     "bootstrap-icons": "^1.10.3",
     "nanoid": "^4.0.1",
     "navaid": "^1.2.0",
+    "regexparam": "^2.0.1",
     "y-prosemirror": "^1.2.0",
     "y-protocols": "^1.0.5",
     "y-webrtc": "^10.2.4",

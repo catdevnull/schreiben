@@ -1,4 +1,6 @@
 import { Schema } from "prosemirror-model";
+import { parse, inject } from "regexparam";
+import { routes } from "../lib/routes";
 
 const hex = (x: string) => ("0" + parseInt(x).toString(16)).slice(-2);
 // https://stackoverflow.com/a/3627747
@@ -313,6 +315,36 @@ export const schema = new Schema({
         };
 
         return ["a", attrs];
+      },
+    },
+    internal_link: {
+      attrs: {
+        id: {},
+      },
+      inclusive: false,
+      parseDOM: [
+        {
+          tag: "a[href]",
+          // TODO: untested
+          getAttrs(dom) {
+            dom = dom as HTMLElement;
+            const href = dom.getAttribute("href");
+            if (href.startsWith("/w/")) {
+              return {
+                id: parse(routes.Page).pattern.exec(href)[1],
+              };
+            } else return false;
+          },
+        },
+      ],
+      toDOM(node) {
+        return [
+          "a",
+          {
+            href: node.attrs.id,
+            //inject(routes.Page, {world:})
+          },
+        ];
       },
     },
 

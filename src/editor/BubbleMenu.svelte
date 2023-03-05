@@ -11,6 +11,7 @@
   import UnderlineIcon from "bootstrap-icons/icons/type-underline.svg";
   import StrikethroughIcon from "bootstrap-icons/icons/type-strikethrough.svg";
   import LinkIcon from "bootstrap-icons/icons/box-arrow-up-right.svg";
+  import InternalLinkIcon from "bootstrap-icons/icons/folder-symlink.svg";
   import CloseIcon from "bootstrap-icons/icons/x.svg";
 
   import type { Command } from "./ps-utils";
@@ -23,6 +24,7 @@
   } from "./ps-utils";
   import { refreshCoords as _refreshCoords } from "./bubblemenu/coords";
   import SimpleMarkItem from "./bubblemenu/SimpleMarkItem.svelte";
+  import { nanoid } from "nanoid";
 
   export let view: EditorView;
   export let state: EditorState;
@@ -117,6 +119,13 @@
     runCommand(updateMark(view.state.schema.marks.link, { href: url }));
   }
 
+  function createInternalLink() {
+    const pageId = nanoid();
+    runCommand(
+      updateMark(view.state.schema.marks.internal_link, { id: pageId })
+    );
+  }
+
   const svgStyle = "width: 100%; height: 100%";
 </script>
 
@@ -144,6 +153,12 @@
       class:active={markIsActive(state, view.state.schema.marks.link)}
       on:mousedown|preventDefault={startEditingLink}
       ><LinkIcon style={svgStyle} /></button
+    >
+    <button
+      type="button"
+      class:active={markIsActive(state, view.state.schema.marks.internal_link)}
+      on:mousedown|preventDefault={createInternalLink}
+      ><InternalLinkIcon style={svgStyle} /></button
     >
   {:else if changingProp.type === "link"}
     <input
