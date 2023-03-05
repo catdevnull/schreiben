@@ -26,7 +26,7 @@ interface Coords {
 }
 
 function coordsAtPos(
-  view: EditorView<any>,
+  view: EditorView,
   pos: number,
   end: boolean = false
 ): Coords {
@@ -66,7 +66,7 @@ function coordsAtPos(
   };
 }
 
-export function refreshCoords(view: EditorView<any>, bubbleEl: HTMLElement) {
+export function refreshCoords(view: EditorView, bubbleEl: HTMLElement) {
   // Brutally stolen from https://github.com/ueberdosis/tiptap/blob/d2cf88fd166092d6df079cb47fe2a55520fadf80/packages/tiptap/src/Plugins/MenuBubble.js
   const { from, to } = view.state.selection;
 

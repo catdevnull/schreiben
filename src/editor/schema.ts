@@ -1,4 +1,4 @@
-import { Schema } from "prosemirror-model";
+import { Schema, type Attrs } from "prosemirror-model";
 import { parse, inject } from "regexparam";
 import { routes } from "../lib/routes";
 
@@ -21,9 +21,7 @@ function getAlign(node: HTMLElement): Align | null {
   return align;
 }
 
-function getHeadingAttrs(
-  level: number
-): (n: Node) => { [key: string]: string } {
+function getHeadingAttrs(level: number): (n: string | Element) => Attrs {
   return (n) => ({ level, align: getAlign(n as HTMLElement) });
 }
 
@@ -121,7 +119,8 @@ export const schema = new Schema({
       parseDOM: [
         {
           tag: "ol",
-          getAttrs(dom: Element) {
+          getAttrs(dom) {
+            dom = dom as HTMLElement;
             return {
               order: dom.hasAttribute("start") ? +dom.getAttribute("start") : 1,
             };

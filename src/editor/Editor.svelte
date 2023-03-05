@@ -1,19 +1,11 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
   import { keymap } from "prosemirror-keymap";
   import { EditorState, Plugin } from "prosemirror-state";
   import { EditorView } from "prosemirror-view";
   import { dropCursor } from "prosemirror-dropcursor";
   import { gapCursor } from "prosemirror-gapcursor";
-  import { DOMParser, DOMSerializer } from "prosemirror-model";
   import type { XmlFragment } from "yjs";
-  import {
-    ySyncPlugin,
-    yCursorPlugin,
-    yUndoPlugin,
-    undo,
-    redo,
-  } from "y-prosemirror";
+  import { ySyncPlugin, yCursorPlugin, yUndoPlugin } from "y-prosemirror";
 
   import "./editor.css";
 

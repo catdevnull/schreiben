@@ -12,8 +12,8 @@ import type { EditorView } from "prosemirror-view";
 import type { Align } from "./schema";
 
 export type Command = (
-  state: EditorState<any>,
-  dispatch?: EditorView<any>["dispatch"]
+  state: EditorState,
+  dispatch?: EditorView["dispatch"]
 ) => boolean;
 
 // A lot of this is from https://github.com/ueberdosis/tiptap/blob/main/packages/tiptap-commands
@@ -120,17 +120,17 @@ export function removeMark(type: MarkType): Command {
 }
 
 export function toggleNode(
-  type: NodeType<any>,
+  type: NodeType,
   attrs: any,
   /// es el tipo que se setea si ya es el type querido; probablemente querés
   /// que sea el type de párrafo
-  alternateType: NodeType<any>
+  alternateType: NodeType
 ): Command {
   return chainCommands(setBlockType(type, attrs), setBlockType(alternateType));
 }
 
 export function commandListener(
-  view: EditorView<any>,
+  view: EditorView,
   command: Command
 ): (event: Event) => void {
   return (event) => {
@@ -141,7 +141,7 @@ export function commandListener(
 
 export default function findParentNodeClosestToPos(
   $pos: ResolvedPos,
-  predicate: (node: ProsemirrorNode<any>) => boolean
+  predicate: (node: ProsemirrorNode) => boolean
 ) {
   for (let i = $pos.depth; i > 0; i -= 1) {
     const node = $pos.node(i);
@@ -158,7 +158,7 @@ export default function findParentNodeClosestToPos(
 }
 
 export function nodeIsActiveFn(
-  type: NodeType<any>,
+  type: NodeType,
   attrs?: any,
   checkParents: boolean = false
 ): (state: EditorState) => boolean {
@@ -185,20 +185,20 @@ export function getAttrFn(attrKey: string): (state: EditorState) => any {
   };
 }
 
-export function markIsActive(state: EditorState, type: MarkType<any>): boolean {
+export function markIsActive(state: EditorState, type: MarkType): boolean {
   let { from, to } = state.selection;
   return state.doc.rangeHasMark(from, to, type);
 }
 
 export interface MarkMatch {
-  node: ProsemirrorNode<any>;
+  node: ProsemirrorNode;
   position: number;
   mark: Mark;
 }
 
 export function getFirstMarkInSelection(
   state: EditorState,
-  type: MarkType<any>
+  type: MarkType
 ): MarkMatch {
   const { to, from } = state.selection;
 
@@ -217,7 +217,7 @@ export function getFirstMarkInSelection(
 export function setAlign(align: Align): Command {
   return (state, dispatch) => {
     let { from, to } = state.selection;
-    let node: ProsemirrorNode<any> | null = null;
+    let node: ProsemirrorNode | null = null;
     state.doc.nodesBetween(from, to, (_node, pos) => {
       if (node) return false;
       if (!_node.isTextblock) return;
