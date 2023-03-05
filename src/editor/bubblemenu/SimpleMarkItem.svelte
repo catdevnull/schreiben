@@ -6,8 +6,8 @@
 
   import { commandListener, markIsActive } from "../ps-utils";
 
-  export let view: EditorView<any>;
-  export let state: EditorState<any>;
+  export let view: EditorView;
+  export let state: EditorState;
   export let type: MarkType;
   export let small: boolean = false;
 
