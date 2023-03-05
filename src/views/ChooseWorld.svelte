@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { inject } from "regexparam";
   import { loadWorlds } from "../lib/worldStorage";
   import { routes } from "../lib/routes";
 
@@ -13,10 +14,10 @@
     {#each worlds as world}
       <li>
         <a
-          href={routes.Page.replace(":worldId", world.room).replace(
-            ":pageId",
-            "index"
-          )}>{world.room}</a
+          href={inject(routes.Page, {
+            worldId: world.room,
+            pageId: "index",
+          })}>{world.room}</a
         >
       </li>
     {/each}
