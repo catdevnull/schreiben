@@ -40,5 +40,5 @@ export function getWorldY(world: WorldIdentifier): WorldY {
 }
 
 export function getWorldPage(ydoc: Y.Doc, pageId: string): Y.XmlFragment {
-  return ydoc.getXmlFragment(`doc/${pageId}`);
+  return ydoc.getXmlFragment(`page/${pageId}`);
 }
