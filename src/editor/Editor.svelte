@@ -67,9 +67,19 @@
 
 <div class="editor">
   {#if view}
-    <BubbleMenu {view} state={updatedState} />
     <MenuBar {view} state={updatedState} />
   {/if}
   <!-- this element gets replaced with the editor itself when mounted -->
   <div bind:this={wrapperEl} />
+  {#if view}
+    <BubbleMenu {view} state={updatedState} />
+  {/if}
 </div>
+
+<style>
+  .editor,
+  div,
+  :global(.ProseMirror) {
+    min-height: 100vh;
+  }
+</style>

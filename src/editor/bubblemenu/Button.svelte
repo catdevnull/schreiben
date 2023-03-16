@@ -22,17 +22,20 @@
     border-radius: 2px;
     padding: 0.3em;
     margin: 0.2em;
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2rem;
+    height: 2rem;
     font-size: 1em;
     line-height: 1;
 
     transition: background 0.2s;
   }
-  button:hover {
-    background: #333;
+  /* https://stackoverflow.com/a/64553121 */
+  @media (hover: hover) and (pointer: fine) {
+    button:hover {
+      background: #eee;
+    }
   }
   button.active {
-    background: #555;
+    background: #ddd;
   }
 </style>

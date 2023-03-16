@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { onMount, onDestroy, tick } from "svelte";
+  import { onDestroy, onMount, tick } from "svelte";
   import type { EditorView } from "prosemirror-view";
   import { EditorState, TextSelection } from "prosemirror-state";
-  import type { Node as ProsemirrorNode } from "prosemirror-model";
-  import { toggleMark } from "prosemirror-commands";
-  import type { Mark } from "prosemirror-model";
 
   import BoldIcon from "bootstrap-icons/icons/type-bold.svg";
   import ItalicIcon from "bootstrap-icons/icons/type-italic.svg";
@@ -19,47 +16,14 @@
     updateMark,
     removeMark,
     markIsActive,
-    commandListener,
     getFirstMarkInSelection,
   } from "./ps-utils";
-  import { refreshCoords as _refreshCoords } from "./bubblemenu/coords";
   import SimpleMarkItem from "./bubblemenu/SimpleMarkItem.svelte";
   import { nanoid } from "nanoid";
   import Button from "./bubblemenu/Button.svelte";
 
   export let view: EditorView;
   export let state: EditorState;
-
-  // == Posicionamiento ==
-  let bubbleEl: HTMLElement = null;
-  let left: number = 0;
-  let bottom: number = 0;
-
-  function refreshCoords() {
-    const coords = _refreshCoords(view, bubbleEl);
-    left = coords.left;
-    bottom = coords.bottom;
-  }
-
-  $: {
-    // refrescar cuando cambia state
-    view;
-    state;
-    if (bubbleEl) refreshCoords();
-  }
-
-  let resizeObserver = new ResizeObserver(() => {
-    if (bubbleEl) refreshCoords();
-  });
-  $: {
-    view;
-    resizeObserver.disconnect();
-    if (bubbleEl) {
-      resizeObserver.observe(bubbleEl.parentElement);
-    }
-  }
-  onDestroy(() => resizeObserver.disconnect());
-  // == /Posicionamiento ==
 
   let changingProp:
     | false
@@ -86,8 +50,7 @@
     command(state, view.dispatch);
   }
 
-  function startEditingLink(event: Event) {
-    const { to, from } = state.selection;
+  function startEditingLink() {
     const match = getFirstMarkInSelection(state, view.state.schema.marks.link);
 
     // si no hay un link en la selección, empezar a editar uno sin ningún enlace
@@ -128,14 +91,33 @@
   }
 
   const svgStyle = "width: 100%; height: 100%";
+
+  /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
+  let barStyle = "";
+  function updateBar() {
+    const viewport = window.visualViewport;
+    // Since the bar is position: fixed we need to offset it by the
+    // visual viewport's offset from the layout viewport origin.
+    const offsetY = window.innerHeight - viewport.height - viewport.offsetTop;
+
+    barStyle = `
+left: ${viewport.offsetLeft}px;
+bottom: ${offsetY}px;
+transform: scale(${1 / viewport.scale});
+`;
+  }
+
+  onMount(() => {
+    window.visualViewport.addEventListener("resize", updateBar);
+    window.visualViewport.addEventListener("scroll", updateBar);
+  });
+  onDestroy(() => {
+    window.visualViewport.removeEventListener("resize", updateBar);
+    window.visualViewport.removeEventListener("scroll", updateBar);
+  });
 </script>
 
-<div
-  bind:this={bubbleEl}
-  class="bubble"
-  hidden={state.selection.empty}
-  style="left: {left}px; bottom: {bottom}px"
->
+<div class="bubble" hidden={state.selection.empty} style={barStyle}>
   {#if changingProp === false}
     <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}
       ><BoldIcon style={svgStyle} /></SimpleMarkItem
@@ -173,15 +155,16 @@
 
 <style>
   .bubble {
-    display: flex !important;
-    position: absolute;
-    z-index: 420;
-    transform: translateX(-50%);
-    background: black;
-    color: white;
-    border-radius: 5px;
+    display: flex;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
     padding: 0rem;
-    margin-bottom: 0.5rem;
+    /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
+    transform-origin: left bottom;
+
+    border-top: 1px solid #ccc;
+    width: 100%;
 
     visibility: visible;
     opacity: 1;
