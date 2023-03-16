@@ -30,6 +30,7 @@ export function getWorldY(world: WorldIdentifier): WorldY {
   const provider = new WebrtcProvider(world.room, ydoc, {
     password: world.password,
     signaling: [
+      "wss://webrtc-signaling.schreiben.nulo.ar",
       "wss://signaling.yjs.dev",
       "wss://y-webrtc-signaling-eu.herokuapp.com",
       "wss://y-webrtc-signaling-us.herokuapp.com",
