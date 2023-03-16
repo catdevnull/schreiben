@@ -5,6 +5,7 @@
   import { toggleMark } from "prosemirror-commands";
 
   import { commandListener, markIsActive } from "../ps-utils";
+  import Button from "./Button.svelte";
 
   export let view: EditorView;
   export let state: EditorState;
@@ -15,10 +16,10 @@
   $: listener = commandListener(view, toggleMark(type));
 </script>
 
-<button type="button" class:active={isActive} on:mousedown={listener}>
+<Button active={isActive} onClick={listener}>
   {#if small}
     <small><slot /></small>
   {:else}
     <slot />
   {/if}
-</button>
+</Button>

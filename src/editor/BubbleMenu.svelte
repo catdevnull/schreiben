@@ -25,6 +25,7 @@
   import { refreshCoords as _refreshCoords } from "./bubblemenu/coords";
   import SimpleMarkItem from "./bubblemenu/SimpleMarkItem.svelte";
   import { nanoid } from "nanoid";
+  import Button from "./bubblemenu/Button.svelte";
 
   export let view: EditorView;
   export let state: EditorState;
@@ -148,17 +149,13 @@
     <SimpleMarkItem {view} {state} type={view.state.schema.marks.strikethrough}
       ><StrikethroughIcon style={svgStyle} /></SimpleMarkItem
     >
-    <button
-      type="button"
-      class:active={markIsActive(state, view.state.schema.marks.link)}
-      on:mousedown|preventDefault={startEditingLink}
-      ><LinkIcon style={svgStyle} /></button
+    <Button
+      active={markIsActive(state, view.state.schema.marks.link)}
+      onClick={startEditingLink}><LinkIcon style={svgStyle} /></Button
     >
-    <button
-      type="button"
-      class:active={markIsActive(state, view.state.schema.marks.internal_link)}
-      on:mousedown|preventDefault={createInternalLink}
-      ><InternalLinkIcon style={svgStyle} /></button
+    <Button
+      active={markIsActive(state, view.state.schema.marks.internal_link)}
+      onClick={createInternalLink}><InternalLinkIcon style={svgStyle} /></Button
     >
   {:else if changingProp.type === "link"}
     <input
@@ -168,11 +165,39 @@
       on:change|preventDefault={onChangeLink}
       value={changingProp.url}
     />
-    <button
-      type="button"
-      title="Borrar enlace"
-      on:mousedown|preventDefault={removeLink}
-      ><CloseIcon style={svgStyle} /></button
+    <Button title="Borrar enlace" onClick={removeLink}
+      ><CloseIcon style={svgStyle} /></Button
     >
   {/if}
 </div>
+
+<style>
+  .bubble {
+    display: flex !important;
+    position: absolute;
+    z-index: 420;
+    transform: translateX(-50%);
+    background: black;
+    color: white;
+    border-radius: 5px;
+    padding: 0rem;
+    margin-bottom: 0.5rem;
+
+    visibility: visible;
+    opacity: 1;
+
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+  .bubble[hidden] {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .bubble input {
+    appearance: none;
+    background: none;
+    color: inherit;
+    border: none;
+    font-size: 1.25em;
+  }
+</style>
