@@ -31,9 +31,9 @@ export function getWorldY(world: WorldIdentifier): WorldY {
     password: world.password,
     signaling: [
       "wss://webrtc-signaling.schreiben.nulo.ar",
-      "wss://signaling.yjs.dev",
-      "wss://y-webrtc-signaling-eu.herokuapp.com",
-      "wss://y-webrtc-signaling-us.herokuapp.com",
+      // "wss://signaling.yjs.dev",
+      // "wss://y-webrtc-signaling-eu.herokuapp.com",
+      // "wss://y-webrtc-signaling-us.herokuapp.com",
     ],
     peerOpts: {
       config: {
