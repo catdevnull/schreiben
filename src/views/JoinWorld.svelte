@@ -7,7 +7,11 @@
 
   async function addWorld() {
     const password = location.hash.slice(1);
-    await writeWorlds((worlds) => [...worlds, { room: worldId, password }]);
+    await writeWorlds((worlds) => [
+      // reemplazar mundo en vez de agregar nuevo, por si se agregó antes con la contraseña incorrecta
+      ...worlds.filter(({ room }) => room !== worldId),
+      { room: worldId, password },
+    ]);
     router.route(inject(routes.Page, { worldId, pageId: "index" }));
   }
 </script>
