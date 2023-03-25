@@ -6,6 +6,7 @@
   import { schema } from "../editor/schema";
   import { makeYdocStore } from "../lib/makeYdocStore";
   import { lastUpdated } from "../lib/lastUpdated";
+  import { nanoid } from "nanoid";
 
   type Entry = {
     id: string;
@@ -54,6 +55,8 @@
 
 <input type="text" bind:value={filter} placeholder="Buscar..." autofocus />
 <ul>
+  <button type="button" on:click={() => onChoose(nanoid())}>Página nueva</button
+  >
   {#each sortedEntries as entry}
     <li>
       <button type="button" on:click={() => onChoose(entry.id)}
