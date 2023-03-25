@@ -16,7 +16,8 @@
     await navigator.clipboard.writeText(await joinWorldLink());
   }
   async function shareJoinWorldLink() {
-    await navigator.clipboard.writeText(await joinWorldLink());
+    const link = await joinWorldLink();
+    await navigator.share({ url: link });
   }
 
   const canShare = "share" in navigator;
