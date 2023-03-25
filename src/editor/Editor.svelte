@@ -72,7 +72,7 @@
   <!-- this element gets replaced with the editor itself when mounted -->
   <div bind:this={wrapperEl} />
   {#if view}
-    <BubbleMenu {view} state={updatedState} />
+    <BubbleMenu {view} {worldY} state={updatedState} />
   {/if}
 </div>
 

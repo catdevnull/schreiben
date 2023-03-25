@@ -21,9 +21,13 @@
   import SimpleMarkItem from "./bubblemenu/SimpleMarkItem.svelte";
   import { nanoid } from "nanoid";
   import Button from "./bubblemenu/Button.svelte";
+  import Modal from "../components/Modal.svelte";
+  import PagePicker from "../components/PagePicker.svelte";
+  import type { WorldY } from "../lib/doc";
 
   export let view: EditorView;
   export let state: EditorState;
+  export let worldY: WorldY;
 
   let changingProp:
     | false
@@ -83,11 +87,17 @@
     runCommand(updateMark(view.state.schema.marks.link, { href: url }));
   }
 
-  function createInternalLink() {
-    const pageId = nanoid();
-    runCommand(
-      updateMark(view.state.schema.marks.internal_link, { id: pageId })
-    );
+  let makingInternalLink = false;
+  function startMakingInternalLink() {
+    if (markIsActive(state, view.state.schema.marks.internal_link)) {
+      runCommand(removeMark(view.state.schema.marks.internal_link));
+    } else {
+      makingInternalLink = true;
+    }
+  }
+  function makeInternalLink(id: string) {
+    runCommand(updateMark(view.state.schema.marks.internal_link, { id }));
+    makingInternalLink = false;
   }
 
   const svgStyle = "width: 100%; height: 100%";
@@ -117,6 +127,13 @@ transform: scale(${1 / viewport.scale});
   });
 </script>
 
+{#if makingInternalLink}
+  <Modal onClose={() => (makingInternalLink = false)}>
+    <svelte:fragment slot="title">Elegir página</svelte:fragment>
+    <PagePicker ydoc={worldY.ydoc} onChoose={makeInternalLink} />
+  </Modal>
+{/if}
+
 <div class="bubble" hidden={state.selection.empty} style={barStyle}>
   {#if changingProp === false}
     <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}
@@ -137,7 +154,8 @@ transform: scale(${1 / viewport.scale});
     >
     <Button
       active={markIsActive(state, view.state.schema.marks.internal_link)}
-      onClick={createInternalLink}><InternalLinkIcon style={svgStyle} /></Button
+      onClick={startMakingInternalLink}
+      ><InternalLinkIcon style={svgStyle} /></Button
     >
   {:else if changingProp.type === "link"}
     <input

@@ -19,10 +19,19 @@
       throw new Error("No conozco ese mundo.");
     }
     const worldY = getWorldY(worldIdentifier);
+
     return { worldY, doc: getWorldPage(worldY.ydoc, pageId) };
   }
 
-  $: docPromise = loadDoc(worldId, pageId);
+  let state: "loading" | { worldY: WorldY; doc: XmlFragment } | { error: any };
+  $: {
+    state = "loading";
+    loadDoc(worldId, pageId)
+      .then((doc) => {
+        state = doc;
+      })
+      .catch((error) => (state = { error }));
+  }
 </script>
 
 <nav>
@@ -38,12 +47,13 @@
     </ul>
   </details>
 </nav>
-{#await docPromise then doc}
-  <Editor doc={doc.doc} worldY={doc.worldY} />
-{:catch error}
-  {error}
+
+{#if state === "loading"}Cargando...{:else if "doc" in state}
+  <Editor doc={state.doc} worldY={state.worldY} />
+{:else if "error" in state}
+  {state.error}
   <a href={routes.ChooseWorld}>Volver al inicio</a>
-{/await}
+{/if}
 
 <style>
   nav a {
