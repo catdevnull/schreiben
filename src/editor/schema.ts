@@ -1,5 +1,5 @@
 import { Schema, type Attrs } from "prosemirror-model";
-import { parse, inject } from "regexparam";
+import { parse } from "regexparam";
 import { routes } from "../lib/routes";
 
 const hex = (x: string) => ("0" + parseInt(x).toString(16)).slice(-2);

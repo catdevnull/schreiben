@@ -1,6 +1,7 @@
 <script lang="ts">
   import { generateNewWorld } from "../lib/doc";
-  import { router, routes } from "../lib/routes";
+  import { routes } from "../lib/routes";
+  import { router } from "../lib/router";
   import { writeWorlds } from "../lib/worldStorage";
 
   function crear(

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { currentRoute } from "./lib/routes";
+  import { currentRoute } from "./lib/router";
 </script>
 
 <main>

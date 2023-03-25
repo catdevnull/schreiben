@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { router, routes } from "../lib/routes";
+  import { routes } from "../lib/routes";
+  import { router } from "../lib/router";
   import { inject } from "regexparam";
   import { writeWorlds } from "../lib/worldStorage";
 
