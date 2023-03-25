@@ -31,6 +31,7 @@ export function getWorldY(world: WorldIdentifier): WorldY {
     password: world.password,
     signaling: [
       "wss://webrtc-signaling.schreiben.nulo.ar",
+      "wss://y-webrtc-eu.fly.dev",
       // "wss://signaling.yjs.dev",
       // "wss://y-webrtc-signaling-eu.herokuapp.com",
       // "wss://y-webrtc-signaling-us.herokuapp.com",
