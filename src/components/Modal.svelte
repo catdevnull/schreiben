@@ -106,8 +106,8 @@
   .backdrop {
     position: fixed;
     inset: 0;
-    background: #6b7280;
-    opacity: 0.75;
+    background: var(--background);
+    opacity: 0.9;
   }
 
   .content-alignment {
@@ -123,11 +123,16 @@
 
   .content {
     overflow-y: none;
-    background: white;
+    background: var(--background);
     padding: 16px 20px;
     border-radius: 16px;
     min-width: 50%;
     min-height: 50%;
+
+    --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+      0 8px 10px -6px rgb(0 0 0 / 0.1);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+      var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 
   h3 {

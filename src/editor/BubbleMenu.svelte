@@ -181,8 +181,8 @@ transform: scale(${1 / viewport.scale});
     /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
     transform-origin: left bottom;
 
-    background: white;
-    border-top: 1px solid #ccc;
+    background: var(--background);
+    border-top: 1px solid var(--accent-bg);
     width: 100%;
 
     visibility: visible;

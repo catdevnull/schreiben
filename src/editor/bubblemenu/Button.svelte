@@ -32,10 +32,10 @@
   /* https://stackoverflow.com/a/64553121 */
   @media (hover: hover) and (pointer: fine) {
     button:hover {
-      background: #eee;
+      background: var(--transparentish);
     }
   }
   button.active {
-    background: #ddd;
+    background: var(--accent-bg);
   }
 </style>
