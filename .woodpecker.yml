@@ -1,0 +1,33 @@
+
+pipeline:
+  build-image:
+    image: docker.io/woodpeckerci/plugin-docker-buildx
+    secrets: [docker_username, docker_password]
+    settings:
+      registry: https://gitea.nulo.in
+      username: Nulo
+      repo: gitea.nulo.in/nulo/schreiben-build
+      dockerfile: tooling/Containerfile
+    when:
+      path:
+        include: ["tooling/*", ".woodpecker.yml"]
+
+  build:
+    image: gitea.nulo.in/nulo/schreiben-build:latest
+    commands:
+      - pnpm install
+      - pnpm check
+      - pnpm build
+
+      - |
+        eval $(ssh-agent -s)
+        echo "$${SSH_KEY}" | tr -d '\r' | ssh-add -
+        mkdir -p ~/.ssh
+        echo "[nulo.ar]:993 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHgHIbf5/jkeyLMndnWlEO12DPj41YPqkmz+aIreVOsP" > ~/.ssh/known_hosts
+
+      - scp -rP993 dist/* root@nulo.in:/var/www/beta.schreiben.nulo.ar/
+    when:
+      branch: antifascista
+      event: push
+    secrets:
+      - ssh_key
