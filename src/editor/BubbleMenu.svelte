@@ -23,6 +23,7 @@
   import Modal from "../components/Modal.svelte";
   import PagePicker from "../components/PagePicker.svelte";
   import type { WorldY } from "../lib/doc";
+  import Linking from "./menubar/Linking.svelte";
 
   export let view: EditorView;
   export let state: EditorState;
@@ -133,52 +134,65 @@ transform: scale(${1 / viewport.scale});
   </Modal>
 {/if}
 
-<div class="bubble" hidden={state.selection.empty} style={barStyle}>
-  {#if changingProp === false}
-    <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}
-      ><BoldIcon style={svgStyle} /></SimpleMarkItem
-    >
-    <SimpleMarkItem {view} {state} type={view.state.schema.marks.em}
-      ><ItalicIcon style={svgStyle} /></SimpleMarkItem
-    >
-    <SimpleMarkItem {view} {state} type={view.state.schema.marks.underline}
-      ><UnderlineIcon style={svgStyle} /></SimpleMarkItem
-    >
-    <SimpleMarkItem {view} {state} type={view.state.schema.marks.strikethrough}
-      ><StrikethroughIcon style={svgStyle} /></SimpleMarkItem
-    >
-    <Button
-      active={markIsActive(state, view.state.schema.marks.link)}
-      onClick={startEditingLink}><LinkIcon style={svgStyle} /></Button
-    >
-    <Button
-      active={markIsActive(state, view.state.schema.marks.internal_link)}
-      onClick={startMakingInternalLink}
-      ><InternalLinkIcon style={svgStyle} /></Button
-    >
-  {:else if changingProp.type === "link"}
-    <input
-      bind:this={linkInputEl}
-      type="text"
-      placeholder="https://"
-      on:change|preventDefault={onChangeLink}
-      value={changingProp.url}
-    />
-    <Button title="Borrar enlace" onClick={removeLink}
-      ><CloseIcon style={svgStyle} /></Button
-    >
-  {/if}
+<div class="floating" style={barStyle}>
+  <Linking {state} {view} />
+  <div class="bubble" hidden={state.selection.empty}>
+    {#if changingProp === false}
+      <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}
+        ><BoldIcon style={svgStyle} /></SimpleMarkItem
+      >
+      <SimpleMarkItem {view} {state} type={view.state.schema.marks.em}
+        ><ItalicIcon style={svgStyle} /></SimpleMarkItem
+      >
+      <SimpleMarkItem {view} {state} type={view.state.schema.marks.underline}
+        ><UnderlineIcon style={svgStyle} /></SimpleMarkItem
+      >
+      <SimpleMarkItem
+        {view}
+        {state}
+        type={view.state.schema.marks.strikethrough}
+        ><StrikethroughIcon style={svgStyle} /></SimpleMarkItem
+      >
+      <Button
+        active={markIsActive(state, view.state.schema.marks.link)}
+        onClick={startEditingLink}><LinkIcon style={svgStyle} /></Button
+      >
+      <Button
+        active={markIsActive(state, view.state.schema.marks.internal_link)}
+        onClick={startMakingInternalLink}
+        ><InternalLinkIcon style={svgStyle} /></Button
+      >
+    {:else if changingProp.type === "link"}
+      <input
+        bind:this={linkInputEl}
+        type="text"
+        placeholder="https://"
+        on:change|preventDefault={onChangeLink}
+        value={changingProp.url}
+      />
+      <Button title="Borrar enlace" onClick={removeLink}
+        ><CloseIcon style={svgStyle} /></Button
+      >
+    {/if}
+  </div>
 </div>
 
 <style>
-  .bubble {
+  .floating {
     display: flex;
+    flex-direction: column;
     position: fixed;
     left: 0px;
     bottom: 0px;
     padding: 0rem;
     /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
     transform-origin: left bottom;
+
+    width: 100%;
+  }
+
+  .bubble {
+    display: flex;
 
     background: var(--background);
     border-top: 1px solid var(--accent-bg);
