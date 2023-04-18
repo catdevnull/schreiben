@@ -3,7 +3,6 @@
   import type { EditorView } from "prosemirror-view";
 
   import BlockSelect from "./menubar/BlockSelect.svelte";
-  import AlignSelect from "./menubar/AlignSelect.svelte";
   // import UploadItem from "./menubar/UploadItem.svelte";
   import ListItem from "./menubar/ListItem.svelte";
   import BlockQuoteItem from "./menubar/BlockQuoteItem.svelte";
@@ -15,7 +14,6 @@
 
 <div class="menubar">
   <BlockSelect {view} {state} />
-  <AlignSelect {view} {state} />
   <!-- <UploadItem {view} {state} /> -->
   <ListItem {view} {state} kind={ListKind.Unordered} />
   <ListItem {view} {state} kind={ListKind.Ordered} />
@@ -23,14 +21,14 @@
 </div>
 
 <style>
-.menubar {
-  position: sticky;
-  top: 0px;
-  z-index: 69;
+  .menubar {
+    position: sticky;
+    top: 0px;
+    z-index: 69;
 
-  display: flex;
+    display: flex;
 
-  background: var(--background, white);
-  border-bottom: 1px solid var(--accent-bg);
-}
+    background: var(--background, white);
+    border-bottom: 1px solid var(--accent-bg);
+  }
 </style>
