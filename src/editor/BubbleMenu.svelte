@@ -19,7 +19,6 @@
     getFirstMarkInSelection,
   } from "./ps-utils";
   import SimpleMarkItem from "./bubblemenu/SimpleMarkItem.svelte";
-  import { nanoid } from "nanoid";
   import Button from "./bubblemenu/Button.svelte";
   import Modal from "../components/Modal.svelte";
   import PagePicker from "../components/PagePicker.svelte";
@@ -105,7 +104,7 @@
   /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
   let barStyle = "";
   function updateBar() {
-    const viewport = window.visualViewport;
+    const viewport = window.visualViewport!;
     // Since the bar is position: fixed we need to offset it by the
     // visual viewport's offset from the layout viewport origin.
     const offsetY = window.innerHeight - viewport.height - viewport.offsetTop;
@@ -118,12 +117,12 @@ transform: scale(${1 / viewport.scale});
   }
 
   onMount(() => {
-    window.visualViewport.addEventListener("resize", updateBar);
-    window.visualViewport.addEventListener("scroll", updateBar);
+    window.visualViewport!.addEventListener("resize", updateBar);
+    window.visualViewport!.addEventListener("scroll", updateBar);
   });
   onDestroy(() => {
-    window.visualViewport.removeEventListener("resize", updateBar);
-    window.visualViewport.removeEventListener("scroll", updateBar);
+    window.visualViewport!.removeEventListener("resize", updateBar);
+    window.visualViewport!.removeEventListener("scroll", updateBar);
   });
 </script>
 

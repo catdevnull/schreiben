@@ -2,7 +2,12 @@ import type { Readable } from "svelte/store";
 import type { Doc, Transaction } from "yjs";
 
 export function makeYdocStore<T>(
-  handler: (update: Uint8Array, origin: any, ydoc: Doc, tr: Transaction) => T,
+  handler: (
+    update: Uint8Array | null,
+    origin: any,
+    ydoc: Doc,
+    tr: Transaction | null
+  ) => T,
   unhandler?: () => void
 ) {
   return (ydoc: Doc): Readable<T> => {
@@ -10,10 +15,10 @@ export function makeYdocStore<T>(
     return {
       subscribe: (run) => {
         function updateHandler(
-          update: Uint8Array,
+          update: Uint8Array | null,
           origin: any,
           ydoc: Doc,
-          tr: Transaction
+          tr: Transaction | null
         ) {
           run(handler(update, origin, ydoc, tr));
         }

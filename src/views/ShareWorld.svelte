@@ -8,6 +8,7 @@
   async function joinWorldLink() {
     const worlds = await loadWorlds();
     const worldIdentifier = worlds.find((w) => w.room === worldId);
+    if (!worldIdentifier) throw new Error("No tenés ese mundo para compartir.");
     return `${location.origin}${inject(routes.JoinWorld, {
       worldId: worldIdentifier.room,
     })}#${worldIdentifier.password}`;

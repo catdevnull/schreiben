@@ -21,7 +21,7 @@
       ? state.schema.nodes.bullet_list
       : kind === ListKind.Ordered
       ? state.schema.nodes.ordered_list
-      : null;
+      : (null as never);
   const listItemType = state.schema.nodes.list_item;
   $: iconComponent =
     kind === ListKind.Unordered
@@ -32,7 +32,7 @@
 
   $: isActive = nodeIsActiveFn(type, null, true);
   $: command = chainCommands(liftListItem(listItemType), wrapInList(type));
-  $: isPossible = command(state, null);
+  $: isPossible = command(state);
   $: actionListener = commandListener(view, command);
 </script>
 

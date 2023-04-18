@@ -10,7 +10,7 @@
   const paragraphType = state.schema.nodes.paragraph;
   const headingType = state.schema.nodes.heading;
 
-  $: isPossible = setBlockType(headingType, { level: 1 })(state, null);
+  $: isPossible = setBlockType(headingType, { level: 1 })(state);
   $: currentValue =
     state.selection.to <= state.selection.$from.end() &&
     (state.selection.$from.parent.type == headingType
@@ -19,10 +19,12 @@
       ? "paragraph"
       : null);
 
-  const onChange = (event) => {
+  const onChange = (
+    event: Event & { currentTarget: EventTarget & HTMLSelectElement }
+  ) => {
     event.preventDefault();
 
-    const [type, param] = event.target.value.split(":");
+    const [type, param] = event.currentTarget.value.split(":");
     if (type === "paragraph") {
       setBlockType(paragraphType, {
         align: state.selection.$from.parent.attrs.align,

@@ -4,11 +4,7 @@
   import { router } from "../lib/router";
   import { writeWorlds } from "../lib/worldStorage";
 
-  function crear(
-    event: Event & { readonly submitter: HTMLElement } & {
-      currentTarget: EventTarget & HTMLFormElement;
-    }
-  ) {
+  function crear(event: Event) {
     event.preventDefault();
     writeWorlds((worlds) => [...worlds, generateNewWorld()]);
     router.run(routes.ChooseWorld);

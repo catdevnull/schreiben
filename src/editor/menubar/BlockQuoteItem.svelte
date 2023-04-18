@@ -15,7 +15,7 @@
 
   $: isActive = nodeIsActiveFn(type, null, true);
   $: command = wrapIn(type);
-  $: isPossible = command(state, null);
+  $: isPossible = command(state);
   $: actionListener = commandListener(view, command);
 </script>
 

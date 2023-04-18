@@ -42,7 +42,7 @@ export const placeholderPlugin = new Plugin({
 });
 
 export function findPlaceholder(state: EditorState, id: any): number | null {
-  const decos: DecorationSet = placeholderPlugin.getState(state);
-  const found = decos.find(undefined, undefined, (spec) => spec.id == id);
-  return found.length ? found[0].from : null;
+  const decos = placeholderPlugin.getState(state);
+  const found = decos?.find(undefined, undefined, (spec) => spec.id == id);
+  return found?.length ? found[0].from : null;
 }

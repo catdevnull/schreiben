@@ -101,8 +101,9 @@ export const schema = new Schema({
           tag: "ol",
           getAttrs(dom) {
             dom = dom as HTMLElement;
+            const start = dom.getAttribute("start");
             return {
-              order: dom.hasAttribute("start") ? +dom.getAttribute("start") : 1,
+              order: start ? +start : 1,
             };
           },
         },
@@ -141,11 +142,12 @@ export const schema = new Schema({
         {
           tag: "figure",
           getAttrs(dom) {
-            const child: HTMLElement =
+            const child: HTMLElement | null =
               (dom as Element).querySelector("img") ||
               (dom as Element).querySelector("video") ||
               (dom as Element).querySelector("audio") ||
               (dom as Element).querySelector("iframe");
+            if (!child) return false;
 
             if (child instanceof HTMLImageElement) {
               return { src: child.src, kind: "img" };
@@ -156,6 +158,7 @@ export const schema = new Schema({
             } else if (child instanceof HTMLIFrameElement) {
               return { src: child.src, kind: "iframe" };
             }
+            return false;
           },
         },
         {
@@ -308,9 +311,11 @@ export const schema = new Schema({
           getAttrs(dom) {
             dom = dom as HTMLElement;
             const href = dom.getAttribute("href");
-            if (href.startsWith("/w/")) {
+            if (href?.startsWith("/w/")) {
+              const matches = parse(routes.Page).pattern.exec(href);
+              if (!matches) return false;
               return {
-                id: parse(routes.Page).pattern.exec(href)[1],
+                id: matches[1],
               };
             } else return false;
           },

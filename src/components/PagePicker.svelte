@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Readable } from "svelte/store";
   import { yDocToProsemirrorJSON } from "y-prosemirror";
   import { Node } from "prosemirror-model";
   import type { Doc } from "yjs";
@@ -29,7 +28,7 @@
           }
         });
         docs.push({
-          title: titleNode?.textContent,
+          title: titleNode ? (titleNode as Node).textContent : undefined,
           id: name.replace(/^page\//, ""),
           name,
         });
@@ -45,7 +44,7 @@
   $: entries = deriveEntries(ydoc);
   $: lastU = lastUpdated(ydoc);
   $: sortedEntries = $entries
-    .sort((a, b) => +$lastU.get(b.name) - +$lastU.get(a.name))
+    .sort((a, b) => +($lastU.get(b.name) || 0) - +($lastU.get(a.name) || 0))
     // TODO: FTS
     .filter((x) => (x.title ?? x.id).includes(filter));
   // $: console.debug($lastU);

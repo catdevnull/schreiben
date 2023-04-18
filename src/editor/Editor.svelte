@@ -5,14 +5,14 @@
   import { dropCursor } from "prosemirror-dropcursor";
   import { gapCursor } from "prosemirror-gapcursor";
   import type { XmlFragment } from "yjs";
-  import { ySyncPlugin, yCursorPlugin, yUndoPlugin } from "y-prosemirror";
+  import { ySyncPlugin, yUndoPlugin } from "y-prosemirror";
 
   import "./editor.css";
 
   import { schema } from "./schema";
   import BubbleMenu from "./BubbleMenu.svelte";
   import MenuBar from "./MenuBar.svelte";
-  import { placeholderPlugin } from "./upload";
+  // import { placeholderPlugin } from "./upload";
   import { baseKeymap } from "./keymap";
   import type { WorldY } from "../lib/doc";
 
@@ -26,7 +26,7 @@
       schema,
       plugins: [
         new Plugin({
-          view: (editorView) => {
+          view: () => {
             // editorView.dom.parentElement?.replaceWith(editorView.dom);
             return {
               update(view, lastState) {
@@ -50,7 +50,7 @@
         // yCursorPlugin(doc.webrtcProvider.awareness),
         yUndoPlugin(),
         keymap(baseKeymap),
-        placeholderPlugin,
+        // placeholderPlugin,
       ],
     });
   }

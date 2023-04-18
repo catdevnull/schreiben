@@ -6,10 +6,8 @@ import type {
   ResolvedPos,
   Node as ProsemirrorNode,
 } from "prosemirror-model";
-import type { EditorState, Selection } from "prosemirror-state";
+import type { EditorState } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
-
-import type { Align } from "./schema";
 
 export type Command = (
   state: EditorState,
@@ -176,7 +174,7 @@ export function getAttrFn(attrKey: string): (state: EditorState) => any {
   return (state) => {
     let { from, to } = state.selection;
     let value: any = undefined;
-    state.doc.nodesBetween(from, to, (node, pos) => {
+    state.doc.nodesBetween(from, to, (node) => {
       if (value !== undefined) return false;
       if (!node.isTextblock) return;
       if (attrKey in node.attrs) value = node.attrs[attrKey];
@@ -199,10 +197,10 @@ export interface MarkMatch {
 export function getFirstMarkInSelection(
   state: EditorState,
   type: MarkType
-): MarkMatch {
+): MarkMatch | null {
   const { to, from } = state.selection;
 
-  let match: MarkMatch;
+  let match: MarkMatch | null = null;
   state.selection.$from.doc.nodesBetween(from, to, (node, position) => {
     if (!match) {
       const mark = type.isInSet(node.marks);
@@ -212,26 +210,4 @@ export function getFirstMarkInSelection(
   });
 
   return match;
-}
-
-export function setAlign(align: Align): Command {
-  return (state, dispatch) => {
-    let { from, to } = state.selection;
-    let node: ProsemirrorNode | null = null;
-    state.doc.nodesBetween(from, to, (_node, pos) => {
-      if (node) return false;
-      if (!_node.isTextblock) return;
-      if (
-        _node.type == state.schema.nodes.paragraph ||
-        _node.type == state.schema.nodes.heading
-      ) {
-        node = _node;
-      }
-    });
-    if (!node) return false;
-    if (dispatch)
-      return setBlockType(node.type, { ...node.attrs, align })(state, dispatch);
-
-    return true;
-  };
 }

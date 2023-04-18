@@ -1,7 +1,7 @@
 <script lang="ts">
   export let onClose: () => void;
 
-  function click(event: Event) {
+  function click(this: Element, event: Event) {
     if (event.target !== this) return;
     onClose();
   }
