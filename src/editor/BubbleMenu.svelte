@@ -200,12 +200,14 @@ transform: scale(${1 / viewport.scale});
 
     visibility: visible;
     opacity: 1;
+    height: auto;
 
-    transition: opacity 0.2s, visibility 0.2s;
+    transition: opacity 0.2s, visibility 0.2s, height 0.2s;
   }
   .bubble[hidden] {
     visibility: hidden;
     opacity: 0;
+    height: 0;
   }
 
   .bubble input {
