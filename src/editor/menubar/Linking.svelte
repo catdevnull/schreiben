@@ -99,5 +99,9 @@
     display: block;
     text-decoration: none;
     line-height: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 40vw;
+    white-space: nowrap;
   }
 </style>
