@@ -2,6 +2,7 @@
   import { inject } from "regexparam";
   import { loadWorlds } from "../lib/worldStorage";
   import { routes } from "../lib/routes";
+  import WorldLink from "../components/WorldLink.svelte";
 
   const worldsPromise = loadWorlds();
 </script>
@@ -13,12 +14,7 @@
   <ul>
     {#each worlds as world}
       <li>
-        <a
-          href={inject(routes.Page, {
-            worldId: world.room,
-            pageId: "index",
-          })}>{world.room}</a
-        >
+        <WorldLink {world} />
       </li>
     {/each}
     <li><a href={routes.CreateWorld}>Crear mundo</a></li>

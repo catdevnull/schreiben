@@ -1,11 +1,16 @@
-import type { WorldIdentifier } from "./doc";
+import { getWorldY, type WorldIdentifier } from "./doc";
 
 const localStorageKey = "schreiben-worlds";
 
 export function loadWorlds(): Promise<WorldIdentifier[]> {
   let json = localStorage.getItem(localStorageKey);
   if (!json) json = "[]";
-  return Promise.resolve(JSON.parse(json));
+  const worlds = JSON.parse(json);
+  for (const world of worlds) {
+    // empezar a cargar el Ydoc
+    getWorldY(world);
+  }
+  return Promise.resolve(worlds);
 }
 
 export async function writeWorlds(
