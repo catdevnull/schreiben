@@ -46,3 +46,7 @@ a {
     --accent-fg: #94a3b8;
   }
 }
+
+button {
+  padding: 0.5em 1em;
+}
