@@ -31,6 +31,10 @@
   function getLinks(node) {
     /** @type {Link[]} */
     let links = [];
+
+    // a veces selecciona el documento entero y no queremos mostrar todos los enlaces
+    if (node.type.spec.group !== "block") return [];
+
     let lastWasLinkMark = false;
     node.descendants((node) => {
       for (const mark of node.marks) {
