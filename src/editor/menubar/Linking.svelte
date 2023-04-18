@@ -74,19 +74,21 @@
 </script>
 
 <div class="linking">
-  {#each links as link}
-    <a
-      href={"href" in link ? link.href : link.id}
-      target={link.type === "external" ? "_blank" : null}
-    >
-      {#if link.type === "internal"}
-        <InternalLinkIcon style={svgStyle} />
-      {:else}
-        <LinkIcon style={svgStyle} />
-      {/if}
-      {link.content}
-    </a>
-  {/each}
+  <div class="links">
+    {#each links as link}
+      <a
+        href={"href" in link ? link.href : link.id}
+        target={link.type === "external" ? "_blank" : null}
+      >
+        {#if link.type === "internal"}
+          <InternalLinkIcon style={svgStyle} />
+        {:else}
+          <LinkIcon style={svgStyle} />
+        {/if}
+        {link.content}
+      </a>
+    {/each}
+  </div>
 </div>
 
 <style>
@@ -94,7 +96,11 @@
     max-width: 1280px;
     width: 100%;
     margin: 0 auto;
+    overflow-x: auto;
+  }
+  .links {
     display: flex;
+    min-width: min-content;
   }
 
   a {
@@ -108,7 +114,7 @@
     line-height: 1;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 40vw;
+    max-width: 45vw;
     white-space: nowrap;
   }
 </style>
