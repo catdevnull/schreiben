@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { NodeType } from "prosemirror-model";
   import type { EditorState } from "prosemirror-state";
   import type { EditorView } from "prosemirror-view";
   import { setBlockType } from "prosemirror-commands";
@@ -10,7 +9,6 @@
   const paragraphType = state.schema.nodes.paragraph;
   const headingType = state.schema.nodes.heading;
 
-  $: isPossible = setBlockType(headingType, { level: 1 })(state);
   $: currentValue =
     state.selection.to <= state.selection.$from.end() &&
     (state.selection.$from.parent.type == headingType
