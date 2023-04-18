@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { inject } from "regexparam";
   import { loadWorlds } from "../lib/worldStorage";
   import { routes } from "../lib/routes";
   import WorldLink from "../components/WorldLink.svelte";
@@ -25,7 +24,7 @@
   ul :global(a) {
     padding: 1em;
     display: block;
-    background: #eee;
+    background: ButtonFace;
     margin: 0.5em;
     border-radius: 15px;
   }
