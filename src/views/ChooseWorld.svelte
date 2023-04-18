@@ -20,3 +20,13 @@
     <li><a href={routes.CreateWorld}>Crear mundo</a></li>
   </ul>
 {/await}
+
+<style>
+  ul :global(a) {
+    padding: 1em;
+    display: block;
+    background: #eee;
+    margin: 0.5em;
+    border-radius: 15px;
+  }
+</style>
