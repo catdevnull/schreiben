@@ -31,12 +31,14 @@
   function getLinks(node) {
     /** @type {Link[]} */
     let links = [];
+    let lastWasLinkMark = false;
     node.descendants((node) => {
       for (const mark of node.marks) {
         const content = node.textContent;
         // no repetir marks interrumpidas por otras marks
         const lastLink = links[links.length - 1] || null;
         if (
+          lastWasLinkMark &&
           lastLink &&
           ("href" in lastLink
             ? lastLink.href === mark.attrs.href
@@ -51,14 +53,19 @@
             content,
             href: mark.attrs.href,
           });
+          lastWasLinkMark = true;
         } else if (mark.type === schema.marks.internal_link) {
           links.push({
             type: "internal",
             content,
             id: mark.attrs.id,
           });
+          lastWasLinkMark = true;
+        } else {
+          lastWasLinkMark = false;
         }
       }
+      if (node.marks.length == 0) lastWasLinkMark = false;
     });
     return links;
   }
