@@ -9,14 +9,6 @@
   box-sizing: border-box;
 }
 
-.editor .menubar {
-  position: sticky;
-  top: 0px;
-  z-index: 69;
-  background: var(--background, white);
-  border-bottom: 1px solid var(--accent-bg);
-}
-
 .editor .menubar button {
   appearance: none;
   background: none;

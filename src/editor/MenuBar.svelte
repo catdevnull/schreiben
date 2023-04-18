@@ -21,3 +21,16 @@
   <ListItem {view} {state} kind={ListKind.Ordered} />
   <BlockQuoteItem {view} {state} />
 </div>
+
+<style>
+.menubar {
+  position: sticky;
+  top: 0px;
+  z-index: 69;
+
+  display: flex;
+
+  background: var(--background, white);
+  border-bottom: 1px solid var(--accent-bg);
+}
+</style>
