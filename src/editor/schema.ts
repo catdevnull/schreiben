@@ -1,4 +1,4 @@
-import { Schema, type Attrs } from "prosemirror-model";
+import { Schema } from "prosemirror-model";
 import { parse } from "regexparam";
 import { routes } from "../lib/routes";
 
@@ -11,19 +11,7 @@ function rgbToHex(rgb: string): string {
   return "#" + hex(matches[1]) + hex(matches[2]) + hex(matches[3]);
 }
 
-export type Align = null | "center" | "right";
-
 export type MultimediaKind = "img" | "video" | "audio" | "iframe";
-
-function getAlign(node: HTMLElement): Align | null {
-  let align = node.style.textAlign || node.getAttribute("data-align");
-  if (align !== "center" && align !== "right") return null;
-  return align;
-}
-
-function getHeadingAttrs(level: number): (n: string | Element) => Attrs {
-  return (n) => ({ level, align: getAlign(n as HTMLElement) });
-}
 
 export const schema = new Schema({
   nodes: {
@@ -34,17 +22,13 @@ export const schema = new Schema({
     paragraph: {
       content: "inline*",
       group: "block",
-      attrs: { align: { default: null } },
       parseDOM: [
         {
           tag: "p",
-          getAttrs(n) {
-            return { align: getAlign(n as HTMLElement) };
-          },
         },
       ],
-      toDOM(node) {
-        return ["p", { style: `text-align: ${node.attrs.align}` }, 0];
+      toDOM() {
+        return ["p", 0];
       },
     },
 
@@ -66,24 +50,20 @@ export const schema = new Schema({
     },
 
     heading: {
-      attrs: { level: { default: 1 }, align: { default: null } },
+      attrs: { level: { default: 1 } },
       content: "text*",
       group: "block",
       defining: true,
       parseDOM: [
-        { tag: "h1", getAttrs: getHeadingAttrs(1) },
-        { tag: "h2", getAttrs: getHeadingAttrs(2) },
-        { tag: "h3", getAttrs: getHeadingAttrs(3) },
-        { tag: "h4", getAttrs: getHeadingAttrs(4) },
-        { tag: "h5", getAttrs: getHeadingAttrs(5) },
-        { tag: "h6", getAttrs: getHeadingAttrs(6) },
+        { tag: "h1" },
+        { tag: "h2" },
+        { tag: "h3" },
+        { tag: "h4" },
+        { tag: "h5" },
+        { tag: "h6" },
       ],
       toDOM(node) {
-        return [
-          "h" + node.attrs.level,
-          { style: `text-align: ${node.attrs.align}` },
-          0,
-        ];
+        return ["h" + node.attrs.level, 0];
       },
     },
 
