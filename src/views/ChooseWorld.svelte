@@ -22,9 +22,11 @@
 
 <style>
   ul :global(a) {
-    padding: 1em;
-    display: block;
     background: ButtonFace;
+    color: ButtonText;
+
+    display: block;
+    padding: 1em;
     margin: 0.5em;
     border-radius: 15px;
   }
