@@ -307,15 +307,19 @@ export const schema = new Schema({
       parseDOM: [
         {
           tag: "a[href]",
+          priority: 100,
           // TODO: untested
           getAttrs(dom) {
             dom = dom as HTMLElement;
             const href = dom.getAttribute("href");
-            if (href?.startsWith("/w/")) {
-              const matches = parse(routes.Page).pattern.exec(href);
-              if (!matches) return false;
+            if (
+              href &&
+              /[useandom\-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict]{21}/.test(
+                href
+              )
+            ) {
               return {
-                id: matches[1],
+                id: href,
               };
             } else return false;
           },
