@@ -14,7 +14,7 @@ import {
   selectNodeForward,
   splitBlock,
 } from "prosemirror-commands";
-import { undo, redo } from "y-prosemirror";
+import { undo, redo } from "prosemirror-history";
 import {
   splitListItem,
   liftListItem,

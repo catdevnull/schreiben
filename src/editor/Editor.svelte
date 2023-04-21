@@ -4,8 +4,9 @@
   import { EditorView } from "prosemirror-view";
   import { dropCursor } from "prosemirror-dropcursor";
   import { gapCursor } from "prosemirror-gapcursor";
+  import { history } from "prosemirror-history";
   import type { XmlFragment } from "yjs";
-  import { ySyncPlugin, yUndoPlugin } from "y-prosemirror";
+  import { ySyncPlugin } from "y-prosemirror";
 
   import "./editor.css";
 
@@ -45,10 +46,10 @@
         dropCursor(),
         gapCursor(),
         //menubar(schema),
-        // history(),
+        history(),
         ySyncPlugin(doc),
         // yCursorPlugin(doc.webrtcProvider.awareness),
-        yUndoPlugin(),
+        // yUndoPlugin(),
         keymap(baseKeymap),
         // placeholderPlugin,
       ],
