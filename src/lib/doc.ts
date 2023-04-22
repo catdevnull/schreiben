@@ -24,6 +24,10 @@ export function generateNewWorld(): WorldIdentifier {
 // cache the previous doc and return that instead
 let worldYCache: { [key: string]: WorldY } = {};
 
+const credsReq = fetch(
+  "https://nulo.metered.live/api/v1/turn/credentials?apiKey=205de2914a8564e2efa19a7d7f299a95e574"
+).then((res) => res.json());
+
 export function getWorldY(world: WorldIdentifier): WorldY {
   if (worldYCache[world.room]) return worldYCache[world.room];
   const ydoc = new Y.Doc();
@@ -36,27 +40,18 @@ export function getWorldY(world: WorldIdentifier): WorldY {
       // "wss://y-webrtc-signaling-eu.herokuapp.com",
       // "wss://y-webrtc-signaling-us.herokuapp.com",
     ],
-    peerOpts: {
-      config: {
-        iceServers: [
-          // { urls: "stun:stun.l.google.com:19302" },
-          // { urls: "stun:global.stun.twilio.com:3478?transport=udp" },
-          {
-            urls: "stun:relay.metered.ca:80",
-          },
-          {
-            urls: "turn:relay.metered.ca:443",
-            username: "7aec233ea46fa835147308ae",
-            credential: "c0eTB5pqj9vOxhii",
-          },
-          {
-            urls: "turn:relay.metered.ca:443?transport=tcp",
-            username: "7aec233ea46fa835147308ae",
-            credential: "c0eTB5pqj9vOxhii",
-          },
-        ],
-      },
-    },
+  });
+  credsReq.then((iceServers) => {
+    // change the default for future connections
+    provider.peerOpts.config = { iceServers };
+    if (!provider.room?.webrtcConns) return;
+    // change the configuration in current connections
+    for (const conn of provider.room?.webrtcConns?.values()) {
+      const pc: RTCPeerConnection = conn.peer._pc;
+      pc.setConfiguration({
+        iceServers,
+      });
+    }
   });
   const idbProvider = new IndexeddbPersistence(world.room, ydoc);
   const worldY = { ydoc, webrtcProvider: provider };
