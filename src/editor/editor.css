@@ -37,6 +37,7 @@
 .ProseMirror {
   width: 100%;
   padding: 0.5em;
+  padding-bottom: 50vh;
 
   overflow-wrap: break-word;
   word-wrap: break-word;
