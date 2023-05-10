@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "upload": "scp -rP993 dist/* root@nulo.in:/var/www/beta.schreiben.nulo.ar/"
+    "upload": "scp -CrP993 dist/* root@nulo.in:/var/www/beta.schreiben.nulo.ar/"
   },
   "devDependencies": {
     "@poppanator/sveltekit-svg": "^2.1.2",
