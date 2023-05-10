@@ -135,7 +135,7 @@ transform: scale(${1 / viewport.scale});
 {/if}
 
 <div class="floating" style={barStyle}>
-  <Linking {state} {view} />
+  <Linking {state} />
   <div class="bubble" hidden={state.selection.empty}>
     {#if changingProp === false}
       <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}

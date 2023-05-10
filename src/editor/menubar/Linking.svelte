@@ -2,13 +2,13 @@
   // Inspirado en https://collectednotes.com/blog/zettelkasten
 
   import { schema } from "../schema";
-  import LinkIcon from "bootstrap-icons/icons/box-arrow-up-right.svg";
-  import InternalLinkIcon from "bootstrap-icons/icons/folder-symlink.svg";
+  import LinkIcon from "eva-icons/outline/svg/external-link-outline.svg";
+  import InternalLinkIcon from "eva-icons/outline/svg/menu-arrow-outline.svg";
 
   const svgStyle = "width: 1em; height: 1em";
 
-  /** @type {import("prosemirror-view").EditorView} */
-  export let view;
+  // /** @type {import("prosemirror-view").EditorView} */
+  // export let view;
   /** @type {import("prosemirror-state").EditorState} */
   export let state;
 
