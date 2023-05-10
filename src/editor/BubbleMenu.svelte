@@ -7,9 +7,9 @@
   import ItalicIcon from "bootstrap-icons/icons/type-italic.svg";
   import UnderlineIcon from "bootstrap-icons/icons/type-underline.svg";
   import StrikethroughIcon from "bootstrap-icons/icons/type-strikethrough.svg";
-  import LinkIcon from "bootstrap-icons/icons/box-arrow-up-right.svg";
-  import InternalLinkIcon from "bootstrap-icons/icons/folder-symlink.svg";
-  import CloseIcon from "bootstrap-icons/icons/x.svg";
+  import LinkIcon from "eva-icons/outline/svg/external-link-outline.svg";
+  import InternalLinkIcon from "eva-icons/outline/svg/menu-arrow-outline.svg";
+  import CloseIcon from "eva-icons/outline/svg/close-outline.svg";
 
   import type { Command } from "./ps-utils";
   import {
