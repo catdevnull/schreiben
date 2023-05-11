@@ -1,20 +1,20 @@
 pipeline:
   deps:
-    image: gitea.nulo.in/nulo/super-image:3.17
+    image: gitea.nulo.in/nulo/super-image:3.18
     commands:
       - pnpm install
   build:
-    image: gitea.nulo.in/nulo/super-image:3.17
+    image: gitea.nulo.in/nulo/super-image:3.18
     group: build
     commands:
       - pnpm build
   check:
-    image: gitea.nulo.in/nulo/super-image:3.17
+    image: gitea.nulo.in/nulo/super-image:3.18
     group: build
     commands:
       - pnpm check
   upload:
-    image: gitea.nulo.in/nulo/super-image:3.17
+    image: gitea.nulo.in/nulo/super-image:3.18
     commands:
       - |
         eval $(ssh-agent -s)
