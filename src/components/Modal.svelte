@@ -112,7 +112,7 @@
 
   .content-alignment {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     position: fixed;
     inset: 0;
     z-index: 269;
@@ -122,7 +122,8 @@
   }
 
   .content {
-    overflow-y: none;
+    overflow-y: auto;
+    max-height: 100%;
     background: var(--background);
     padding: 16px 20px;
     border-radius: 16px;
