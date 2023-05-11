@@ -87,7 +87,7 @@
         {:else}
           <LinkIcon />
         {/if}
-        {link.content}
+        <span>{link.content}</span>
       </a>
     {/each}
   </div>
@@ -116,9 +116,12 @@
     border-radius: 2em;
     text-decoration: none;
     line-height: 1;
+    max-width: 45vw;
+  }
+
+  a > span {
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 45vw;
     white-space: nowrap;
   }
 
