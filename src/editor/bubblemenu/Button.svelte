@@ -38,4 +38,8 @@
   button.active {
     background: var(--accent-bg);
   }
+
+  button :global(svg) {
+    fill: currentColor;
+  }
 </style>

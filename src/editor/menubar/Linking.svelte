@@ -121,4 +121,8 @@
     max-width: 45vw;
     white-space: nowrap;
   }
+
+  .linking :global(svg) {
+    fill: currentColor;
+  }
 </style>
