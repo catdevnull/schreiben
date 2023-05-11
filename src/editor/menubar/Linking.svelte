@@ -5,8 +5,6 @@
   import LinkIcon from "eva-icons/outline/svg/external-link-outline.svg";
   import InternalLinkIcon from "eva-icons/outline/svg/menu-arrow-outline.svg";
 
-  const svgStyle = "width: 1em; height: 1em";
-
   // /** @type {import("prosemirror-view").EditorView} */
   // export let view;
   /** @type {import("prosemirror-state").EditorState} */
@@ -85,9 +83,9 @@
         target={link.type === "external" ? "_blank" : null}
       >
         {#if link.type === "internal"}
-          <InternalLinkIcon style={svgStyle} />
+          <InternalLinkIcon />
         {:else}
-          <LinkIcon style={svgStyle} />
+          <LinkIcon />
         {/if}
         {link.content}
       </a>
@@ -112,8 +110,10 @@
     color: ButtonText;
     padding: 0.7em 1em;
     margin: 0.3em;
+    display: flex;
+    gap: 0.25em;
+    align-items: center;
     border-radius: 2em;
-    display: block;
     text-decoration: none;
     line-height: 1;
     text-overflow: ellipsis;
@@ -124,5 +124,7 @@
 
   .linking :global(svg) {
     fill: currentColor;
+    width: 1.25em;
+    height: 1.25em;
   }
 </style>
