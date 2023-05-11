@@ -1,24 +1,21 @@
-
 pipeline:
-  build-image:
-    image: docker.io/woodpeckerci/plugin-docker-buildx
-    secrets: [docker_username, docker_password]
-    settings:
-      registry: https://gitea.nulo.in
-      username: Nulo
-      repo: gitea.nulo.in/nulo/schreiben-build
-      dockerfile: tooling/Containerfile
-    when:
-      path:
-        include: ["tooling/*", ".woodpecker.yml"]
-
-  build:
-    image: gitea.nulo.in/nulo/schreiben-build:latest
+  deps:
+    image: gitea.nulo.in/nulo/super-image:3.17
     commands:
       - pnpm install
-      - pnpm check
+  build:
+    image: gitea.nulo.in/nulo/super-image:3.17
+    group: build
+    commands:
       - pnpm build
-
+  check:
+    image: gitea.nulo.in/nulo/super-image:3.17
+    group: build
+    commands:
+      - pnpm check
+  upload:
+    image: gitea.nulo.in/nulo/super-image:3.17
+    commands:
       - |
         eval $(ssh-agent -s)
         echo "$${SSH_KEY}" | tr -d '\r' | ssh-add -
