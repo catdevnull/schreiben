@@ -115,7 +115,6 @@
     align-items: center;
     border-radius: 2em;
     text-decoration: none;
-    line-height: 1;
     max-width: 45vw;
   }
 
