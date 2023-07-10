@@ -20,9 +20,9 @@ pipeline:
         eval $(ssh-agent -s)
         echo "$${SSH_KEY}" | tr -d '\r' | ssh-add -
         mkdir -p ~/.ssh
-        echo "[nulo.ar]:993 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHgHIbf5/jkeyLMndnWlEO12DPj41YPqkmz+aIreVOsP" > ~/.ssh/known_hosts
+        echo "[nulo.ar]:2223 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQEuHNIWQcS5La6lc2OvHQxZN6tRVtkts2wH1tfpola" > ~/.ssh/known_hosts
 
-      - scp -rP993 dist/* ci-schreiben@nulo.ar:/var/www/beta.schreiben.nulo.ar/
+      - scp -rP2223 dist/* root@nulo.ar:/data/beta_schreiben_nulo_ar/
     when:
       branch: antifascista
       event: push
