@@ -2,7 +2,7 @@
   import { setRouteToLastPagePromise, currentRoute } from "./lib/router";
 </script>
 
-<main>
+<main class='min-h-screen'>
   {#await setRouteToLastPagePromise then}
     <svelte:component
       this={$currentRoute.component}
