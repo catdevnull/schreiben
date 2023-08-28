@@ -6,11 +6,14 @@
 
   /** @type {import("../lib/doc").WorldIdentifier} */
   export let world;
+  /** @type {string} */
+  export let className = "";
 
   $: title = titleStore(getWorldY(world).ydoc, "page/index");
 </script>
 
 <a
+  class={className}
   href={inject(routes.Page, {
     worldId: world.room,
     pageId: "index",
