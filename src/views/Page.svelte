@@ -5,6 +5,7 @@
   import { getWorldPage, getWorldY, type WorldY } from "../lib/doc";
   import { routes } from "../lib/routes";
   import { loadWorlds } from "../lib/worldStorage";
+  import { lastPageStore } from "../lib/router";
 
   export let worldId: string;
   export let pageId: string;
@@ -32,6 +33,11 @@
       })
       .catch((error) => (state = { error }));
   }
+
+  async function saveLastPage() {
+    await lastPageStore.set({ worldId, pageId });
+  }
+  saveLastPage();
 </script>
 
 <nav>

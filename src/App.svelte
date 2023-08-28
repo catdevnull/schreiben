@@ -1,9 +1,14 @@
 <script lang="ts">
-  import { currentRoute } from "./lib/router";
+  import { setRouteToLastPagePromise, currentRoute } from "./lib/router";
 </script>
 
 <main>
-  <svelte:component this={$currentRoute.component} {...$currentRoute.params} />
+  {#await setRouteToLastPagePromise then}
+    <svelte:component
+      this={$currentRoute.component}
+      {...$currentRoute.params}
+    />
+  {/await}
 </main>
 
 <style>
