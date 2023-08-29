@@ -315,7 +315,7 @@ export const schema = new Schema({
             if (
               href &&
               /[useandom\-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict]{21}/.test(
-                href
+                href,
               )
             ) {
               return {

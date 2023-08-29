@@ -6,9 +6,9 @@ export function makeYdocStore<T>(
     update: Uint8Array | null,
     origin: any,
     ydoc: Doc,
-    tr: Transaction | null
+    tr: Transaction | null,
   ) => T,
-  unhandler?: () => void
+  unhandler?: () => void,
 ) {
   return (ydoc: Doc): Readable<T> => {
     // thanks https://github.com/relm-us/svelt-yjs/blob/main/src/types/array.ts
@@ -18,7 +18,7 @@ export function makeYdocStore<T>(
           update: Uint8Array | null,
           origin: any,
           ydoc: Doc,
-          tr: Transaction | null
+          tr: Transaction | null,
         ) {
           run(handler(update, origin, ydoc, tr));
         }

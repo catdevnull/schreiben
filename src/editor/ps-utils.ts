@@ -11,14 +11,14 @@ import type { EditorView } from "prosemirror-view";
 
 export type Command = (
   state: EditorState,
-  dispatch?: EditorView["dispatch"]
+  dispatch?: EditorView["dispatch"],
 ) => boolean;
 
 // A lot of this is from https://github.com/ueberdosis/tiptap/blob/main/packages/tiptap-commands
 
 export function getMarkRange(
   $pos: ResolvedPos | null = null,
-  type: MarkType | null = null
+  type: MarkType | null = null,
 ) {
   if (!$pos || !type) {
     return false;
@@ -122,14 +122,14 @@ export function toggleNode(
   attrs: any,
   /// es el tipo que se setea si ya es el type querido; probablemente querés
   /// que sea el type de párrafo
-  alternateType: NodeType
+  alternateType: NodeType,
 ): Command {
   return chainCommands(setBlockType(type, attrs), setBlockType(alternateType));
 }
 
 export function commandListener(
   view: EditorView,
-  command: Command
+  command: Command,
 ): (event: Event) => void {
   return (event) => {
     event.preventDefault();
@@ -139,7 +139,7 @@ export function commandListener(
 
 export default function findParentNodeClosestToPos(
   $pos: ResolvedPos,
-  predicate: (node: ProsemirrorNode) => boolean
+  predicate: (node: ProsemirrorNode) => boolean,
 ) {
   for (let i = $pos.depth; i > 0; i -= 1) {
     const node = $pos.node(i);
@@ -158,7 +158,7 @@ export default function findParentNodeClosestToPos(
 export function nodeIsActiveFn(
   type: NodeType,
   attrs?: any,
-  checkParents: boolean = false
+  checkParents: boolean = false,
 ): (state: EditorState) => boolean {
   return (state) => {
     let { $from, to } = state.selection;
@@ -196,7 +196,7 @@ export interface MarkMatch {
 
 export function getFirstMarkInSelection(
   state: EditorState,
-  type: MarkType
+  type: MarkType,
 ): MarkMatch | null {
   const { to, from } = state.selection;
 

@@ -24,6 +24,6 @@ export function lastUpdated(ydoc: Doc) {
       }
       return map;
     },
-    () => observers.forEach(({ y, observer }) => y.unobserveDeep(observer))
+    () => observers.forEach(({ y, observer }) => y.unobserveDeep(observer)),
   )(ydoc);
 }

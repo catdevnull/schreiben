@@ -14,7 +14,7 @@ export function loadWorlds(): Promise<WorldIdentifier[]> {
 }
 
 export async function writeWorlds(
-  callback: (worlds: WorldIdentifier[]) => WorldIdentifier[]
+  callback: (worlds: WorldIdentifier[]) => WorldIdentifier[],
 ): Promise<WorldIdentifier[]> {
   const oldWorlds = await loadWorlds();
   const newWorlds = callback(oldWorlds);

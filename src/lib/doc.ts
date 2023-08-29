@@ -25,7 +25,7 @@ export function generateNewWorld(): WorldIdentifier {
 let worldYCache: { [key: string]: WorldY } = {};
 
 const credsReq = fetch(
-  "https://nulo.metered.live/api/v1/turn/credentials?apiKey=205de2914a8564e2efa19a7d7f299a95e574"
+  "https://nulo.metered.live/api/v1/turn/credentials?apiKey=205de2914a8564e2efa19a7d7f299a95e574",
 ).then((res) => res.json());
 
 export function getWorldY(world: WorldIdentifier): WorldY {

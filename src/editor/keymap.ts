@@ -26,7 +26,7 @@ import { schema } from "./schema";
 const backspace = chainCommands(
   deleteSelection,
   joinBackward,
-  selectNodeBackward
+  selectNodeBackward,
 );
 const del = chainCommands(deleteSelection, joinForward, selectNodeForward);
 
@@ -37,7 +37,7 @@ const pcBaseKeymap = {
     liftEmptyBlock,
     // XXX: hack
     splitListItem(schema.nodes.list_item as any),
-    splitBlock
+    splitBlock,
   ),
   "Mod-Enter": chainCommands(exitCode, splitBlock),
   Backspace: backspace,

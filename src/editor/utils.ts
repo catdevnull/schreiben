@@ -9,7 +9,7 @@ interface Props {
 export function h(
   tagName: string,
   props: Props,
-  children: (Node | string | undefined)[]
+  children: (Node | string | undefined)[],
 ): HTMLElement {
   const el = document.createElement(tagName);
   if (props.class) {

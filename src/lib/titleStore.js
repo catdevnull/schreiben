@@ -27,6 +27,6 @@ export function titleStore(ydoc, id) {
 
       return title;
     },
-    () => observer && y?.unobserveDeep(observer)
+    () => observer && y?.unobserveDeep(observer),
   )(ydoc);
 }
