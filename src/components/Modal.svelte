@@ -21,8 +21,8 @@
   <div class="backdrop" />
 
   <div class="content-alignment" on:click={click} on:keydown={keydown}>
-    <div class="content">
-      <h3 id="modal-title">
+    <div class="content shadow-xl">
+      <h3 class="text-2xl" id="modal-title">
         <slot name="title" />
       </h3>
       <slot />
@@ -127,13 +127,6 @@
     background: var(--background);
     padding: 16px 20px;
     border-radius: 16px;
-    min-width: 50%;
-    min-height: 50%;
-
-    --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-      0 8px 10px -6px rgb(0 0 0 / 0.1);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-      var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 
   h3 {

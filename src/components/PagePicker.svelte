@@ -6,6 +6,7 @@
   import { makeYdocStore } from "../lib/makeYdocStore";
   import { lastUpdated } from "../lib/lastUpdated";
   import { nanoid } from "nanoid";
+  import PlusIcon from "eva-icons/fill/svg/plus.svg";
 
   type Entry = {
     id: string;
@@ -52,14 +53,31 @@
   const deriveEntries = makeYdocStore((_, __, ydoc) => getDocs(ydoc));
 </script>
 
-<input type="text" bind:value={filter} placeholder="Buscar..." autofocus />
-<ul>
-  <button type="button" on:click={() => onChoose(nanoid())}>Página nueva</button
+<!-- https://devdojo.com/pines/docs/text-input -->
+<input
+  type="text"
+  bind:value={filter}
+  placeholder="Buscar..."
+  autofocus
+  class="h-10 w-full rounded-md rounded-b-none border border-neutral-300 bg-white px-3 py-2 text-sm placeholder:text-neutral-500 dark:border-neutral-600 dark:bg-neutral-700 placeholder:dark:text-neutral-300"
+/>
+<ul
+  class="flex flex-col rounded-b-md border border-t-0 border-neutral-300 bg-white p-2 dark:border-neutral-600 dark:bg-neutral-700"
+>
+  <button
+    type="button"
+    class="flex items-center gap-2 rounded px-2 py-2 text-left hover:bg-neutral-200 dark:hover:bg-neutral-600"
+    on:click={() => onChoose(nanoid())}
   >
-  {#each sortedEntries as entry}
+    <PlusIcon class="w-6 fill-current" />
+    Página nueva
+  </button>
+  {#each sortedEntries as entry, index (entry.id)}
     <li>
-      <button type="button" on:click={() => onChoose(entry.id)}
-        >{entry.title ?? entry.id}</button
+      <button
+        type="button"
+        class="flex w-full items-center gap-2 rounded px-2 py-2 text-left hover:bg-neutral-200 dark:hover:bg-neutral-600"
+        on:click={() => onChoose(entry.id)}>{entry.title ?? entry.id}</button
       >
     </li>
   {/each}
