@@ -71,7 +71,7 @@
     <MenuBar {view} state={updatedState} />
   {/if}
   <!-- this element gets replaced with the editor itself when mounted -->
-  <div class="prose before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic max-w-none min-h-screen" bind:this={wrapperEl} />
+  <div class="prose dark:prose-invert before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic max-w-none min-h-screen" bind:this={wrapperEl} />
   {#if view}
     <BubbleMenu {view} {worldY} state={updatedState} />
   {/if}

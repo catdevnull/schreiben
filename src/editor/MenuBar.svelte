@@ -12,7 +12,7 @@
   export let state: EditorState;
 </script>
 
-<div class="menubar">
+<div class="menubar sticky top-0 flex py-2 px-4 z-50 items-center">
   <BlockSelect {view} {state} />
   <!-- <UploadItem {view} {state} /> -->
   <ListItem {view} {state} kind={ListKind.Unordered} />
@@ -22,12 +22,6 @@
 
 <style>
   .menubar {
-    position: sticky;
-    top: 0px;
-    z-index: 69;
-
-    display: flex;
-
     background: var(--background, white);
     border-bottom: 1px solid var(--accent-bg);
   }

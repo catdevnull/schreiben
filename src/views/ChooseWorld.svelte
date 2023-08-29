@@ -16,14 +16,14 @@
     {#each worlds as world}
       <li>
         <WorldLink
-          className="px-6 py-4 bg-slate-200 w-full block rounded-2xl my-4 shadow text-xl"
+          className="px-6 py-4 bg-slate-200 dark:bg-neutral-800 w-full block rounded-2xl dark:border-neutral-700/70 border my-4 shadow text-xl"
           {world}
         />
       </li>
     {/each}
     <li>
       <a
-        class="px-6 py-4 bg-slate-200 w-full block rounded-2xl my-4 shadow text-xl"
+        class="px-6 py-4 bg-slate-200 dark:bg-neutral-800 w-full block rounded-2xl dark:border-neutral-700/70 border my-4 shadow text-xl"
         href={routes.CreateWorld}>Crear mundo</a
       >
     </li>

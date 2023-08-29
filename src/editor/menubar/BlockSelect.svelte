@@ -38,7 +38,7 @@
   };
 </script>
 
-<select value={currentValue} on:change={onChange}>
+<select value={currentValue} on:change={onChange} class="relative flex items-center justify-between py-3 pl-3 pr-10 text-left bg-white dark:bg-neutral-800 border rounded-md shadow-sm cursor-default border-neutral-200/70 dark:border-neutral-700/70 text-sm">
   <option value="paragraph">Párrafo</option>
   <option value="heading:1">Titulo grande</option>
   <option value="heading:2">Titulo mediano</option>
