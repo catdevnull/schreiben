@@ -66,20 +66,18 @@
   }
 </script>
 
-<div class="editor">
+<div class="editor min-h-screen">
   {#if view}
     <MenuBar {view} state={updatedState} />
   {/if}
   <!-- this element gets replaced with the editor itself when mounted -->
-  <div bind:this={wrapperEl} />
+  <div class="prose before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic max-w-none min-h-screen" bind:this={wrapperEl} />
   {#if view}
     <BubbleMenu {view} {worldY} state={updatedState} />
   {/if}
 </div>
 
 <style>
-  .editor,
-  div,
   :global(.ProseMirror) {
     min-height: 100vh;
   }

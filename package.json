@@ -13,6 +13,7 @@
   "devDependencies": {
     "@poppanator/sveltekit-svg": "^2.1.2",
     "@sveltejs/vite-plugin-svelte": "^2.0.4",
+    "@tailwindcss/typography": "^0.5.9",
     "@tsconfig/svelte": "^3.0.0",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "autoprefixer": "^10.4.15",

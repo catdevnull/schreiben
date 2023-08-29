@@ -47,10 +47,6 @@
   outline: lightskyblue solid;
 }
 
-.ProseMirror img {
-  max-width: 100%;
-}
-
 .ProseMirror figure {
   margin: 0;
   padding: 0.5em 2em;
@@ -60,9 +56,3 @@
   color: #666;
 }
 
-.ProseMirror blockquote {
-  background-color: var(--transparentish);
-  border-left: 5px solid var(--foreground);
-  padding: 1.25em 1.5em;
-  margin: 0.5em;
-}
