@@ -72,7 +72,7 @@
     class="flex justify-between rounded-md border border-neutral-200/60 px-3.5 py-1"
   >
     <ol
-      class="mb-3 inline-flex items-center space-x-1 text-xs text-neutral-500 sm:mb-0 [&_.active-breadcrumb]:font-medium [&_.active-breadcrumb]:text-neutral-600"
+      class="inline-flex items-center space-x-1 text-xs text-neutral-500 sm:mb-0 [&_.active-breadcrumb]:font-medium [&_.active-breadcrumb]:text-neutral-600"
     >
       {#each $pageBreadcrumbs as crumb, index}
         <li>
