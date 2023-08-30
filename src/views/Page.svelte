@@ -7,11 +7,27 @@
   import { routes } from "../lib/routes";
   import { loadWorlds } from "../lib/worldStorage";
   import breadcrumbs from "../lib/breadcrumbs";
+  import { pageStore } from "../lib/makeYdocStore";
+  import { derived } from "svelte/store";
+  import { getTitle } from "../lib/getTitle";
 
   export let worldId: string;
   export let pageId: string;
 
   $: pageBreadcrumbs = breadcrumbs.worldStore(worldId);
+  $: crumbsTitles = derived(
+    [pageBreadcrumbs],
+    ([crumbs], set: (val: (string | undefined)[]) => void) => {
+      return derived(
+        crumbs.map((c) => pageStore(worldId, c)),
+        (crumbPages) =>
+          crumbPages.map(
+            (x, index) =>
+              x && x.doc && getTitle(x.doc, `page/${crumbs[index]}`),
+          ),
+      ).subscribe(set);
+    },
+  );
 
   async function loadDoc(
     worldId: string,
@@ -63,7 +79,8 @@
           <a
             href={inject(routes.Page, { worldId, pageId: crumb })}
             class="inline-flex items-center py-1 font-normal hover:text-neutral-900 focus:outline-none"
-            class:active-breadcrumb={crumb === pageId}>{crumb}</a
+            class:active-breadcrumb={crumb === pageId}
+            >{$crumbsTitles[index] || crumb}</a
           >
         </li>
         {#if index !== $pageBreadcrumbs.length - 1}

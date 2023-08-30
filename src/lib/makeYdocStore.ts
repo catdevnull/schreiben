@@ -1,5 +1,12 @@
-import type { Readable } from "svelte/store";
-import type { Doc, Transaction } from "yjs";
+import {
+  derived,
+  type Readable,
+  type Subscriber,
+  type Unsubscriber,
+} from "svelte/store";
+import type { Doc, Transaction, XmlFragment } from "yjs";
+import { loadWorlds, worldsStore } from "./worldStorage";
+import { getWorldPage, getWorldY } from "./doc";
 
 export function makeYdocStore<T>(
   handler: (
@@ -31,4 +38,38 @@ export function makeYdocStore<T>(
       },
     };
   };
+}
+
+export function ydocStore(ydoc: Doc): Readable<{
+  update: Uint8Array | null;
+  origin: any;
+  ydoc: Doc;
+  tr: Transaction | null;
+}> {
+  return {
+    subscribe(run) {
+      run({ update: null, ydoc, tr: null, origin: null });
+      const cb = (update: any, origin: any, ydoc: any, tr: any) =>
+        run({ update, origin, ydoc, tr });
+      ydoc.on("update", cb);
+      return () => {
+        ydoc.off("update", cb);
+      };
+    },
+  };
+}
+
+export function pageStore(
+  worldId: string,
+  pageId: string,
+): Readable<{ doc: Doc; frag: XmlFragment }> {
+  return derived([worldsStore], ([$worlds], set) => {
+    const world = $worlds?.find((w) => w.room === worldId);
+    if (!world) return;
+    const ydoc = getWorldY(world);
+    const ydocS = ydocStore(ydoc.ydoc);
+    return derived([ydocS], ([{ ydoc }]) => {
+      return getWorldPage(ydoc, pageId);
+    }).subscribe((frag) => set({ doc: ydoc.ydoc, frag }));
+  });
 }
