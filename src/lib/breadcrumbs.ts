@@ -26,6 +26,9 @@ class BreadcrumbsStore {
       } else {
         crumbs.push(pageId);
       }
+      if (crumbs.includes("index")) {
+        crumbs = crumbs.slice(crumbs.indexOf("index"));
+      }
       map.set(worldId, crumbs);
       return map;
     });
