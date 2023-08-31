@@ -6,7 +6,12 @@ import type {
   ResolvedPos,
   Node as ProsemirrorNode,
 } from "prosemirror-model";
-import type { EditorState } from "prosemirror-state";
+import {
+  EditorState,
+  Selection,
+  TextSelection,
+  Transaction,
+} from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
 
 export type Command = (
@@ -66,15 +71,15 @@ export function updateMark(type: MarkType, attrs: any): Command {
     const { ranges, empty } = selection;
 
     if (empty) {
-      const range = getMarkRange(selection.$from, type);
-      if (!range) throw new Error("What the fuck");
-      const { from, to } = range;
+      if (doc.rangeHasMark(selection.from, selection.to, type)) {
+        const range = getMarkRange(selection.$from, type);
+        if (!range) throw new Error("What the fuck");
+        const { from, to } = range;
 
-      if (doc.rangeHasMark(from, to, type)) {
         tr.removeMark(from, to, type);
+      } else {
+        tr.addStoredMark(type.create(attrs));
       }
-
-      tr.addMark(from, to, type.create(attrs));
     } else {
       ranges.forEach((ref$1) => {
         const { $to, $from } = ref$1;
@@ -174,7 +179,7 @@ export function getAttrFn(attrKey: string): (state: EditorState) => any {
   return (state) => {
     let { from, to } = state.selection;
     let value: any = undefined;
-    state.doc.nodesBetween(from, to, (node) => {
+    state.doc.nodesBetween(from, to, (node, pos) => {
       if (value !== undefined) return false;
       if (!node.isTextblock) return;
       if (attrKey in node.attrs) value = node.attrs[attrKey];
@@ -183,9 +188,63 @@ export function getAttrFn(attrKey: string): (state: EditorState) => any {
   };
 }
 
+// Adaptado de
+// https://github.com/ueberdosis/tiptap/blob/8c6751f0c638effb22110b62b40a1632ea6867c9/packages/core/src/helpers/isMarkActive.ts#L18
 export function markIsActive(state: EditorState, type: MarkType): boolean {
-  let { from, to } = state.selection;
-  return state.doc.rangeHasMark(from, to, type);
+  const { empty, ranges } = state.selection;
+
+  if (empty) {
+    return !!(state.storedMarks || state.selection.$from.marks()).some(
+      (mark) => type.name === mark.type.name,
+    );
+  }
+
+  let selectionRange = 0;
+  const markRanges: {
+    mark: Mark;
+    from: number;
+    to: number;
+  }[] = [];
+
+  ranges.forEach(({ $from, $to }) => {
+    const from = $from.pos;
+    const to = $to.pos;
+
+    state.doc.nodesBetween(from, to, (node, pos) => {
+      if (!node.isText && !node.marks.length) return;
+
+      const relativeFrom = Math.max(from, pos);
+      const relativeTo = Math.min(to, pos + node.nodeSize);
+      const range = relativeTo - relativeFrom;
+
+      selectionRange += range;
+
+      markRanges.push(
+        ...node.marks.map((mark) => ({
+          mark,
+          from: relativeFrom,
+          to: relativeTo,
+        })),
+      );
+    });
+  });
+
+  if (selectionRange === 0) return false;
+
+  const matchedRange = markRanges
+    .filter((markRange) => type.name === markRange.mark.type.name)
+    .reduce((sum, markRange) => sum + markRange.to - markRange.from, 0);
+
+  const excludedRange = markRanges
+    .filter(
+      (markRange) =>
+        markRange.mark.type !== type && markRange.mark.type.excludes(type),
+    )
+    .reduce((sum, markRange) => sum + markRange.to - markRange.from, 0);
+
+  const range = matchedRange > 0 ? matchedRange + excludedRange : matchedRange;
+
+  return range >= selectionRange;
 }
 
 export interface MarkMatch {
@@ -198,16 +257,34 @@ export function getFirstMarkInSelection(
   state: EditorState,
   type: MarkType,
 ): MarkMatch | null {
-  const { to, from } = state.selection;
+  const { to, from, empty } = state.selection;
 
   let match: MarkMatch | null = null;
+
   state.selection.$from.doc.nodesBetween(from, to, (node, position) => {
     if (!match) {
       const mark = type.isInSet(node.marks);
       if (!mark) return;
+      if (!markIsActive(state, type)) return;
       match = { node, position, mark };
     }
   });
 
   return match;
+}
+
+export function selectMark(
+  mark: MarkMatch,
+  state: EditorState,
+  dispatch: EditorView["dispatch"],
+) {
+  dispatch(
+    state.tr.setSelection(
+      TextSelection.create(
+        state.doc,
+        mark.position,
+        mark.position + mark.node.nodeSize,
+      ),
+    ),
+  );
 }

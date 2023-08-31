@@ -16,11 +16,16 @@
   // import { placeholderPlugin } from "./upload";
   import { baseKeymap } from "./keymap";
   import type { WorldY } from "../lib/doc";
+  import { writable } from "svelte/store";
+  import EditLinkMenu from "./bubblemenu/EditLinkMenu.svelte";
+  import LinkTooltip from "./bubblemenu/LinkTooltip.svelte";
 
   export let doc: XmlFragment;
   export let worldY: WorldY;
 
   let wrapperEl: HTMLElement;
+
+  const editingLink = writable<false | "new" | "selection">(false);
 
   function createState(doc: XmlFragment): EditorState {
     return EditorState.create({
@@ -69,9 +74,14 @@
 <div class="editor min-h-screen">
   {#if view}
     <MenuBar {view} state={updatedState} />
+    <EditLinkMenu state={updatedState} {view} {editingLink} />
+    <LinkTooltip state={updatedState} {view} {editingLink} />
   {/if}
   <!-- this element gets replaced with the editor itself when mounted -->
-  <div class="prose dark:prose-invert before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic max-w-none min-h-screen" bind:this={wrapperEl} />
+  <div
+    class="prose min-h-screen max-w-none dark:prose-invert before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic"
+    bind:this={wrapperEl}
+  />
   {#if view}
     <BubbleMenu {view} {worldY} state={updatedState} />
   {/if}
