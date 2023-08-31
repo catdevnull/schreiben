@@ -35,7 +35,7 @@
   }
 </script>
 
-<nav>
+<nav class="px-4 py-2">
   <details>
     <summary>Opciones</summary>
     <ul>
