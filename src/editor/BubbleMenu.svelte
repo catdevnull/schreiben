@@ -2,7 +2,7 @@
   import { onDestroy, onMount, tick } from "svelte";
   import type { Writable } from "svelte/store";
   import type { EditorView } from "prosemirror-view";
-  import { EditorState, TextSelection } from "prosemirror-state";
+  import type { EditorState } from "prosemirror-state";
 
   import BoldIcon from "bootstrap-icons/icons/type-bold.svg";
   import ItalicIcon from "bootstrap-icons/icons/type-italic.svg";
@@ -10,7 +10,6 @@
   import StrikethroughIcon from "bootstrap-icons/icons/type-strikethrough.svg";
   import LinkIcon from "eva-icons/outline/svg/external-link-outline.svg";
   import InternalLinkIcon from "eva-icons/outline/svg/menu-arrow-outline.svg";
-  import CloseIcon from "eva-icons/outline/svg/close-outline.svg";
 
   import type { Command } from "./ps-utils";
   import {
