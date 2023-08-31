@@ -130,7 +130,6 @@
 
   .content {
     overflow-y: auto;
-    max-height: 100%;
     background: var(--background);
     padding: 16px 20px;
     border-radius: 16px;
