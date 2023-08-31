@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check": "svelte-check",
     "upload": "scp -CrP993 dist/* root@nulo.in:/var/www/beta.schreiben.nulo.ar/",
     "format": "prettier --write src/"
   },
@@ -35,7 +35,7 @@
     "prosemirror-transform": "~1.7.1",
     "prosemirror-view": "^1.31.7",
     "svelte": "^3.58.0",
-    "svelte-check": "^2.10.3",
+    "svelte-check": "^3.5.1",
     "tailwindcss": "^3.3.3",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5",
