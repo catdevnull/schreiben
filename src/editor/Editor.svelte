@@ -79,7 +79,7 @@
   {/if}
   <!-- this element gets replaced with the editor itself when mounted -->
   <div
-    class="prose min-h-screen max-w-none dark:prose-invert before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic"
+    class="prose prose-neutral min-h-screen max-w-none dark:prose-invert before:prose-p:content-none after:prose-p:content-none prose-blockquote:font-normal prose-blockquote:not-italic"
     bind:this={wrapperEl}
   />
   {#if view}
