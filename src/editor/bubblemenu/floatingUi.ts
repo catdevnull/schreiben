@@ -1,19 +1,16 @@
 import { readable, type Readable } from "svelte/store";
-import {
-  computePosition,
-  autoUpdate,
-  autoPlacement,
-  shift,
-  offset,
-} from "@floating-ui/dom";
-import type { ComputePositionConfig } from "@floating-ui/dom/src/types";
-import type { MarkMatch } from "../ps-utils";
+import { computePosition, autoUpdate } from "@floating-ui/dom";
+import type {
+  ComputePositionConfig,
+  ReferenceElement,
+} from "@floating-ui/dom/src/types";
 import type { EditorView } from "prosemirror-view";
+import { getFirstMarkInSelection } from "../ps-utils";
 
 export type Style = string;
 
 export function floatingUi(
-  refEl: Element,
+  refEl: ReferenceElement,
   tooltipEl: HTMLElement,
   options?: Partial<ComputePositionConfig>,
 ): Readable<Style> {
@@ -28,14 +25,30 @@ export function floatingUi(
   };
 }
 
-export function markSelectionFloatingUi(
-  view: EditorView,
-  mark: MarkMatch,
+export function selectionFloatingUi(
   tooltipEl: HTMLElement,
   options?: Partial<ComputePositionConfig>,
 ): Readable<Style> {
-  let { node } = (view as any).docView.domFromPos(view.state.selection.from);
-  if (!node || !mark || !tooltipEl) return readable("");
-  if (!(node instanceof Element)) node = node.parentElement;
-  return floatingUi(node, tooltipEl, options);
+  const sel = document.getSelection();
+  const range = sel?.getRangeAt(0);
+
+  if (!range) return readable("");
+  return floatingUi(range, tooltipEl, options);
+}
+
+export function linkFloatingUi(
+  view: EditorView,
+  tooltipEl: HTMLElement,
+  options?: Partial<ComputePositionConfig>,
+): Readable<Style> {
+  const mark = getFirstMarkInSelection(
+    view.state,
+    view.state.schema.marks.link,
+  );
+  if (!mark) return readable("");
+  let node = view.nodeDOM(mark?.position);
+  if (!node) return readable("");
+  const element = node instanceof Element ? node : node.parentElement;
+  if (!element) return readable("");
+  return floatingUi(element, tooltipEl, options);
 }

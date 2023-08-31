@@ -83,7 +83,7 @@
     bind:this={wrapperEl}
   />
   {#if view}
-    <BubbleMenu {view} {worldY} state={updatedState} />
+    <BubbleMenu {view} {worldY} {editingLink} state={updatedState} />
   {/if}
 </div>
 

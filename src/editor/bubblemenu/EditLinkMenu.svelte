@@ -4,8 +4,13 @@
   import { getFirstMarkInSelection } from "../ps-utils";
   import { readable, type Writable } from "svelte/store";
   import { nanoid } from "nanoid";
-  import { markSelectionFloatingUi } from "./floatingUi";
-  import { autoPlacement, shift, offset } from "@floating-ui/dom";
+  import { linkFloatingUi, selectionFloatingUi } from "./floatingUi";
+  import {
+    autoPlacement,
+    shift,
+    offset,
+    type ComputePositionConfig,
+  } from "@floating-ui/dom";
 
   export let state: EditorState;
   export let view: EditorView;
@@ -76,15 +81,12 @@
 
   $: shown = !!$editingLink;
 
-  $: linkMatch =
-    state && getFirstMarkInSelection(view.state, view.state.schema.marks.link);
-  $: style =
-    shown && linkMatch
-      ? markSelectionFloatingUi(view, linkMatch, formEl, {
-          placement: "top",
-          middleware: [offset(6), autoPlacement(), shift({ padding: 5 })],
-        })
-      : readable("");
+  $: style = shown
+    ? selectionFloatingUi(formEl, {
+        placement: "top",
+        middleware: [offset(6), autoPlacement(), shift({ padding: 5 })],
+      })
+    : readable("");
 </script>
 
 <svelte:document on:pointerdown={detectFocus} />

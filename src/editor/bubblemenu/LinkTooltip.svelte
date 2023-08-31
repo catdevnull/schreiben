@@ -3,11 +3,10 @@
   import {
     getFirstMarkInSelection,
     getMarkRange,
-    removeMark,
     selectMark,
   } from "../ps-utils";
   import type { EditorView } from "prosemirror-view";
-  import { markSelectionFloatingUi } from "./floatingUi";
+  import { linkFloatingUi, selectionFloatingUi } from "./floatingUi";
   import { readable, type Writable } from "svelte/store";
   import { flip, shift, offset } from "@floating-ui/dom";
   import EditIcon from "eva-icons/outline/svg/edit-outline.svg";
@@ -22,13 +21,12 @@
   $: link = state && getFirstMarkInSelection(view.state, markType);
   $: shown = !!link && !$editingLink;
 
-  $: style =
-    shown && link
-      ? markSelectionFloatingUi(view, link, tooltipEl, {
-          placement: "bottom",
-          middleware: [offset(6), flip(), shift({ padding: 5 })],
-        })
-      : readable("");
+  $: style = shown
+    ? linkFloatingUi(view, tooltipEl, {
+        placement: "bottom",
+        middleware: [offset(6), flip(), shift({ padding: 5 })],
+      })
+    : readable("");
 
   function editLink() {
     if (!link) return;
@@ -44,7 +42,7 @@
 </script>
 
 <div
-  class="absolute z-30 w-max items-center overflow-hidden rounded border border-neutral-200/70 bg-white px-1 leading-none shadow-lg dark:border-neutral-700 dark:bg-neutral-900"
+  class="absolute z-20 w-max items-center overflow-hidden rounded border border-neutral-200/70 bg-white px-1 leading-none shadow-lg dark:border-neutral-700 dark:bg-neutral-900"
   class:flex={shown}
   class:hidden={!shown}
   bind:this={tooltipEl}

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount, tick } from "svelte";
+  import type { Writable } from "svelte/store";
   import type { EditorView } from "prosemirror-view";
   import { EditorState, TextSelection } from "prosemirror-state";
 
@@ -17,6 +18,7 @@
     removeMark,
     markIsActive,
     getFirstMarkInSelection,
+    selectMark,
   } from "./ps-utils";
   import SimpleMarkItem from "./bubblemenu/SimpleMarkItem.svelte";
   import Button from "./bubblemenu/Button.svelte";
@@ -28,6 +30,7 @@
   export let view: EditorView;
   export let state: EditorState;
   export let worldY: WorldY;
+  export let editingLink: Writable<false | "new" | "selection">;
 
   let changingProp:
     | false
@@ -55,36 +58,19 @@
   }
 
   function startEditingLink() {
-    const match = getFirstMarkInSelection(state, view.state.schema.marks.link);
-
-    // si no hay un link en la selección, empezar a editar uno sin ningún enlace
-    // TODO: quizás queremos poner algo tipo https://sutty.nl por defecto?
-    if (!match) {
-      changingProp = { type: "link", url: "" };
-      return;
-    }
-
-    view.dispatch(
-      state.tr.setSelection(
-        TextSelection.create(
-          state.doc,
-          match.position,
-          match.position + match.node.nodeSize
-        )
-      )
+    const match = getFirstMarkInSelection(
+      view.state,
+      view.state.schema.marks.link,
     );
-    changingProp = { type: "link", url: match.mark.attrs.href };
-  }
-
-  function removeLink() {
-    changingProp = false;
-    runCommand(removeMark(view.state.schema.marks.link));
-  }
-
-  function onChangeLink(event: Event) {
-    changingProp = false;
-    const url = (event.target as HTMLInputElement).value;
-    runCommand(updateMark(view.state.schema.marks.link, { href: url }));
+    if (match) {
+      selectMark(match, view.state, view.dispatch);
+      $editingLink = "selection";
+    } else if (!view.state.selection.empty) {
+      $editingLink = "selection";
+    } else {
+      runCommand(removeMark(view.state.schema.marks.link));
+      $editingLink = "new";
+    }
   }
 
   let makingInternalLink = false;
@@ -134,7 +120,7 @@ transform: scale(${1 / viewport.scale});
   </Modal>
 {/if}
 
-<div class="floating" style={barStyle}>
+<div class="floating z-40" style={barStyle}>
   <Linking {state} />
   <div class="bubble" hidden={state.selection.empty}>
     {#if changingProp === false}
@@ -161,17 +147,6 @@ transform: scale(${1 / viewport.scale});
         active={markIsActive(state, view.state.schema.marks.internal_link)}
         onClick={startMakingInternalLink}
         ><InternalLinkIcon style={svgStyle} /></Button
-      >
-    {:else if changingProp.type === "link"}
-      <input
-        bind:this={linkInputEl}
-        type="text"
-        placeholder="https://"
-        on:change|preventDefault={onChangeLink}
-        value={changingProp.url}
-      />
-      <Button title="Borrar enlace" onClick={removeLink}
-        ><CloseIcon style={svgStyle} /></Button
       >
     {/if}
   </div>
@@ -202,19 +177,14 @@ transform: scale(${1 / viewport.scale});
     opacity: 1;
     height: auto;
 
-    transition: opacity 0.2s, visibility 0.2s, height 0.2s;
+    transition:
+      opacity 0.2s,
+      visibility 0.2s,
+      height 0.2s;
   }
   .bubble[hidden] {
     visibility: hidden;
     opacity: 0;
     height: 0;
-  }
-
-  .bubble input {
-    appearance: none;
-    background: none;
-    color: inherit;
-    border: none;
-    font-size: 1.25em;
   }
 </style>
