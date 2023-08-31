@@ -75,59 +75,23 @@
   $: links = getLinks(state.selection.$to.parent);
 </script>
 
-<div class="linking">
-  <div class="links">
+<div class="mx-auto w-full max-w-7xl overflow-x-auto">
+  <div class="flex min-w-min">
     {#each links as link}
       <a
+        class="m-1 flex max-w-[45vw] items-center gap-1 rounded-full border border-neutral-200 bg-white px-4 py-3 no-underline"
         href={"href" in link ? link.href : link.id}
         target={link.type === "external" ? "_blank" : null}
       >
         {#if link.type === "internal"}
-          <InternalLinkIcon />
+          <InternalLinkIcon class="h-5 w-5 shrink-0 fill-current" />
         {:else}
-          <LinkIcon />
+          <LinkIcon class="h-5 w-5 shrink-0 fill-current" />
         {/if}
-        <span>{link.content}</span>
+        <span class="overflow-hidden text-ellipsis whitespace-nowrap"
+          >{link.content}</span
+        >
       </a>
     {/each}
   </div>
 </div>
-
-<style>
-  .linking {
-    max-width: 1280px;
-    width: 100%;
-    margin: 0 auto;
-    overflow-x: auto;
-  }
-  .links {
-    display: flex;
-    min-width: min-content;
-  }
-
-  a {
-    background: ButtonFace;
-    color: ButtonText;
-    padding: 0.7em 1em;
-    margin: 0.3em;
-    display: flex;
-    gap: 0.25em;
-    align-items: center;
-    border-radius: 2em;
-    text-decoration: none;
-    max-width: 45vw;
-  }
-
-  a > span {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .linking :global(svg) {
-    fill: currentColor;
-    width: 1.25em;
-    height: 1.25em;
-    flex-shrink: 0;
-  }
-</style>
