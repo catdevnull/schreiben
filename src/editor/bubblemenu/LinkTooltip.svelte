@@ -44,15 +44,15 @@
 </script>
 
 <div
-  class="x-tooltip bg-gray"
+  class="absolute z-30 w-max items-center overflow-hidden rounded border border-neutral-200/70 bg-white px-1 leading-none shadow-lg dark:border-neutral-700 dark:bg-neutral-900"
   class:flex={shown}
   class:hidden={!shown}
   bind:this={tooltipEl}
   style={$style}
 >
-  <!-- TODO: hacer que el clickeable sea relativo a la url final del sitio? -->
-  <span>
+  <span class=" ">
     <a
+      class="block max-w-[50vw] overflow-x-hidden text-ellipsis whitespace-nowrap p-2 text-blue-500 dark:text-blue-300"
       href={link?.mark.attrs.href}
       rel="noopener noreferrer nofollow"
       target="_blank"
@@ -60,46 +60,20 @@
       {link?.mark.attrs.href}
     </a>
   </span>
-  <button type="button" on:click={editLink} title={"Editar enlace"}>
+  <button
+    class="my-1 appearance-none rounded border-none p-1 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+    type="button"
+    on:click={editLink}
+    title={"Editar enlace"}
+  >
     <EditIcon class="h-6 w-6 fill-current" />
   </button>
-  <button type="button" on:click={removeLink} title={"Borrar enlace"}>
+  <button
+    class="my-1 appearance-none rounded border-none p-1 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+    type="button"
+    on:click={removeLink}
+    title={"Borrar enlace"}
+  >
     <CloseIcon class="h-6 w-6 fill-current" />
   </button>
 </div>
-
-<style>
-  .x-tooltip {
-    width: max-content;
-    position: absolute;
-    background: #222;
-    color: white;
-    border-radius: 4px;
-    z-index: 420;
-    line-height: 1;
-
-    align-items: center;
-  }
-  .x-tooltip > * {
-    padding: 0.4rem 0.5rem;
-  }
-  a {
-    display: block;
-    color: lightblue;
-    max-width: 50vw;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  button {
-    background: #222;
-    color: white;
-    border: none;
-    appearance: none;
-    font-size: 1.5rem;
-    border-radius: 4px;
-  }
-  button:hover {
-    background: #444;
-  }
-</style>
