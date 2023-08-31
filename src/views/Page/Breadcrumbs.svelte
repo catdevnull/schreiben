@@ -7,6 +7,7 @@
   import { derived } from "svelte/store";
   import { getTitle } from "../../lib/getTitle";
   import { routes } from "../../lib/routes";
+  import type { HTMLOlAttributes } from "svelte/elements";
 
   export let worldId: string;
   export let pageId: string;
@@ -27,22 +28,27 @@
   );
 
   let breadcrumbsEl: HTMLDivElement;
-  const crumbsScrollToEnd = async () => {
+  let breadcrumbsListEl: HTMLOListElement;
+  const crumbsScrollToEnd = async (behavior: ScrollBehavior = "auto") => {
     await tick();
-    breadcrumbsEl?.scroll({
+    breadcrumbsEl.scroll({
       left: breadcrumbsEl.scrollWidth,
-      behavior: "smooth",
+      behavior,
     });
   };
-
   onMount(() => {
-    crumbsScrollToEnd();
+    crumbsScrollToEnd("smooth");
+    const resizeObserver = new ResizeObserver(() =>
+      crumbsScrollToEnd("smooth"),
+    );
+    resizeObserver.observe(breadcrumbsListEl);
+    return () => resizeObserver.disconnect();
   });
-  $: {
-    $crumbsTitles;
-    $pageBreadcrumbs;
-    crumbsScrollToEnd();
-  }
+  onMount(() => {
+    const resizeObserver = new ResizeObserver(() => crumbsScrollToEnd());
+    resizeObserver.observe(breadcrumbsEl);
+    return () => resizeObserver.disconnect();
+  });
 </script>
 
 <!-- https://devdojo.com/pines/docs/breadcrumbs -->
@@ -52,6 +58,7 @@
 >
   <ol
     class="inline-flex items-center space-x-1 text-xs text-neutral-500 dark:text-neutral-300 sm:mb-0 [&_.active-breadcrumb]:font-medium [&_.active-breadcrumb]:text-neutral-600 dark:[&_.active-breadcrumb]:text-neutral-200"
+    bind:this={breadcrumbsListEl}
   >
     {#each $pageBreadcrumbs as crumb, index}
       <li>
