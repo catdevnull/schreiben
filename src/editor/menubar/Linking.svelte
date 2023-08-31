@@ -79,7 +79,7 @@
   <div class="flex min-w-min">
     {#each links as link}
       <a
-        class="m-1 flex max-w-[45vw] items-center gap-1 rounded-full border border-neutral-200 bg-white px-4 py-3 no-underline dark:border-neutral-500 dark:bg-neutral-800"
+        class="m-1 flex max-w-[45vw] items-center gap-1 rounded-full border border-neutral-200 bg-white px-4 py-3 no-underline dark:border-neutral-700/70 dark:bg-neutral-800"
         href={"href" in link ? link.href : link.id}
         target={link.type === "external" ? "_blank" : null}
       >
