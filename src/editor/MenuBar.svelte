@@ -12,7 +12,9 @@
   export let state: EditorState;
 </script>
 
-<div class="menubar sticky top-0 flex py-2 px-4 z-50 items-center">
+<div
+  class="sticky top-0 z-50 flex items-center border-b border-neutral-200/60 bg-white px-4 py-2 dark:border-neutral-700 dark:bg-neutral-800"
+>
   <BlockSelect {view} {state} />
   <!-- <UploadItem {view} {state} /> -->
   <ListItem {view} {state} kind={ListKind.Unordered} />
@@ -20,9 +22,14 @@
   <BlockQuoteItem {view} {state} />
 </div>
 
-<style>
-  .menubar {
-    background: var(--background, white);
-    border-bottom: 1px solid var(--accent-bg);
+<style lang="postcss">
+  div :global(button) {
+    @apply m-1 appearance-none rounded p-2 leading-none transition-colors hover:bg-neutral-600/20 dark:hover:bg-neutral-600/40;
+  }
+  div :global(button.active) {
+    @apply bg-neutral-300 dark:bg-neutral-700;
+  }
+  div :global(button svg) {
+    @apply h-6 w-6;
   }
 </style>
