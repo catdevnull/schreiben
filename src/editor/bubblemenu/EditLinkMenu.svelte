@@ -11,7 +11,6 @@
   export let view: EditorView;
   export let editingLink: Writable<false | "new" | "selection">;
 
-  let hrefInputEl: HTMLInputElement;
   let formEl: HTMLFormElement;
 
   // ref: https://gitlab.com/gitlab-org/gitlab-foss/-/blob/13d851c795a48b670b859a7ec5bd6e2886d2789e/app/assets/javascripts/content_editor/components/bubble_menus/link_bubble_menu.vue#L69
@@ -23,11 +22,6 @@
     if (!editingLink) return;
     text = "";
     href = "";
-
-    // el timeout... ugh
-    hrefInputEl?.focus();
-    setTimeout(() => hrefInputEl?.focus(), 50);
-    setTimeout(() => hrefInputEl?.focus(), 100);
 
     if (editingLink === "selection") {
       // https://gitlab.com/gitlab-org/gitlab-foss/-/blob/13d851c795a48b670b859a7ec5bd6e2886d2789e/app/assets/javascripts/content_editor/components/bubble_menus/link_bubble_menu.vue#L69
@@ -96,47 +90,29 @@
 <svelte:document on:pointerdown={detectFocus} />
 
 <form
-  class="rounded-lg bg-white shadow-lg"
+  class="absolute z-50 w-max rounded-lg border border-neutral-200/70 bg-white p-4 shadow-lg dark:border-neutral-700 dark:bg-neutral-900"
   style={$style}
   hidden={!shown}
   bind:this={formEl}
   on:submit|preventDefault={onSubmit}
 >
-  <div class="form-group">
-    <label for={`link-text-${id}`} class="col-form-label d-block">Texto</label>
-    <input
-      class="form-control"
-      id={`link-text-${id}`}
-      type="text"
-      bind:value={text}
-    />
+  <div class="mb-4">
+    <label for={`link-text-${id}`} class="block">Texto</label>
+    <input class="input" id={`link-text-${id}`} type="text" bind:value={text} />
   </div>
-  <div class="form-group was-validated">
-    <label for={`link-href-${id}`} class="col-form-label d-block">Enlace</label>
+  <div class="mb-4">
+    <label for={`link-href-${id}`} class="block">Enlace</label>
     <input
-      class="form-control"
+      class="input"
       id={`link-href-${id}`}
       type="url"
-      bind:this={hrefInputEl}
+      autofocus
       bind:value={href}
     />
   </div>
-  <div class="d-flex justify-content-end buttons">
-    <button type="button" class="btn btn-secondary" on:click={cancel}
-      >Cancelar</button
+  <div class="flex justify-end gap-2">
+    <button class="btn-outline" type="button" on:click={cancel}>Cancelar</button
     >
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button class="btn" type="submit">Guardar</button>
   </div>
 </form>
-
-<style>
-  form {
-    width: max-content;
-    position: absolute;
-    z-index: 420;
-    padding: 1rem;
-  }
-  .buttons {
-    gap: 0.5rem;
-  }
-</style>

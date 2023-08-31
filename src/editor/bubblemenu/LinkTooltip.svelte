@@ -10,6 +10,8 @@
   import { markSelectionFloatingUi } from "./floatingUi";
   import { readable, type Writable } from "svelte/store";
   import { flip, shift, offset } from "@floating-ui/dom";
+  import EditIcon from "eva-icons/outline/svg/edit-outline.svg";
+  import CloseIcon from "eva-icons/fill/svg/close.svg";
 
   export let state: EditorState;
   export let view: EditorView;
@@ -58,11 +60,11 @@
       {link?.mark.attrs.href}
     </a>
   </span>
-  <button type="button" on:click={editLink}>
-    <i class={`fa fa-edit`} title={"Editar enlace"} />
+  <button type="button" on:click={editLink} title={"Editar enlace"}>
+    <EditIcon class="h-6 w-6 fill-current" />
   </button>
-  <button type="button" on:click={removeLink}>
-    <i class={`fa fa-remove`} title={"Borrar enlace"} />
+  <button type="button" on:click={removeLink} title={"Borrar enlace"}>
+    <CloseIcon class="h-6 w-6 fill-current" />
   </button>
 </div>
 
