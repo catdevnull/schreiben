@@ -1,4 +1,6 @@
 <script lang="ts">
+  import CloseIcon from "eva-icons/fill/svg/close.svg";
+
   export let onClose: () => void;
 
   function click(this: Element, event: Event) {
@@ -22,9 +24,14 @@
 
   <div class="content-alignment" on:click={click} on:keydown={keydown}>
     <div class="content shadow-xl">
-      <h3 class="text-2xl" id="modal-title">
-        <slot name="title" />
-      </h3>
+      <div class="mb-3 flex items-center justify-between">
+        <h3 class="text-2xl" id="modal-title">
+          <slot name="title" />
+        </h3>
+        <button on:click={onClose}
+          ><CloseIcon class="h-10 w-10 fill-current" /></button
+        >
+      </div>
       <slot />
       <!--<div
       class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
@@ -127,10 +134,5 @@
     background: var(--background);
     padding: 16px 20px;
     border-radius: 16px;
-  }
-
-  h3 {
-    margin: 0;
-    margin-bottom: 12px;
   }
 </style>
