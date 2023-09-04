@@ -4,12 +4,11 @@
   import { getFirstMarkInSelection } from "../ps-utils";
   import { readable, type Writable } from "svelte/store";
   import { nanoid } from "nanoid";
-  import { linkFloatingUi, selectionFloatingUi } from "./floatingUi";
+  import { selectionFloatingUi } from "./floatingUi";
   import {
     autoPlacement,
     shift,
     offset,
-    type ComputePositionConfig,
   } from "@floating-ui/dom";
 
   export let state: EditorState;
