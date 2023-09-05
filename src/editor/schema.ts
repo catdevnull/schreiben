@@ -314,7 +314,7 @@ export const schema = new Schema({
             const href = dom.getAttribute("href");
             if (
               href &&
-              /[useandom\-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict]{21}/.test(
+              /^[useandom\-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict]{21}$/.test(
                 href,
               )
             ) {
