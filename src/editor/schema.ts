@@ -308,15 +308,14 @@ export const schema = new Schema({
         {
           tag: "a[href]",
           priority: 100,
-          // TODO: untested
           getAttrs(dom) {
             dom = dom as HTMLElement;
             const href = dom.getAttribute("href");
             if (
               href &&
-              /^[useandom\-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict]{21}$/.test(
-                href,
-              )
+              (/^[useandom\-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict]{21}$/.test(
+                href
+              ) || href === 'index')
             ) {
               return {
                 id: href,
