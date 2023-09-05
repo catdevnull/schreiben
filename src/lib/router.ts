@@ -17,6 +17,12 @@ export const currentRoute = writable<{
   params?: Record<string, string>;
 }>({ component: ChooseWorld });
 
+currentRoute.subscribe((value) => {
+  if (value.params?.pageId) {
+    document.title = `${value.params.pageId} - Schreiben`
+  } else document.title = 'Schreiben'
+})
+
 export let router = navaid("/", () =>
   currentRoute.set({ component: NotFound }),
 );
