@@ -5,6 +5,7 @@
   import { dropCursor } from "prosemirror-dropcursor";
   import { gapCursor } from "prosemirror-gapcursor";
   import { history } from "prosemirror-history";
+  import { inputRules, wrappingInputRule } from "prosemirror-inputrules";
   import type { XmlFragment } from "yjs";
   import { ySyncPlugin } from "y-prosemirror";
 
@@ -12,7 +13,6 @@
 
   import { schema } from "./schema";
   import BubbleMenu from "./BubbleMenu.svelte";
-  import MenuBar from "./MenuBar.svelte";
   // import { placeholderPlugin } from "./upload";
   import { baseKeymap } from "./keymap";
   import type { WorldY } from "../lib/doc";
@@ -56,6 +56,14 @@
         // yCursorPlugin(doc.webrtcProvider.awareness),
         // yUndoPlugin(),
         keymap(baseKeymap),
+        inputRules({
+          rules: [
+            // https://github.com/ueberdosis/tiptap/blob/6f218be6e439603c85559c6d77ec93a205003bf5/packages/extension-bullet-list/src/bullet-list.ts#L24C27-L24C43
+            wrappingInputRule(/^\s*([-+*])\s$/, schema.nodes.bullet_list),
+            wrappingInputRule(/^\s*([0-9]\.)\s$/, schema.nodes.ordered_list),
+            wrappingInputRule(/^>\s$/, schema.nodes.blockquote),
+          ],
+        }),
         // placeholderPlugin,
       ],
     });
@@ -73,7 +81,6 @@
 
 <div class="editor min-h-screen">
   {#if view}
-    <MenuBar {view} state={updatedState} />
     <EditLinkMenu state={updatedState} {view} {editingLink} />
     <LinkTooltip state={updatedState} {view} {editingLink} />
   {/if}

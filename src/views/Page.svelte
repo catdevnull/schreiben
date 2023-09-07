@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { XmlFragment } from "yjs";
   import { inject } from "regexparam";
+  import ArrowBackIcon from "eva-icons/fill/svg/arrow-back.svg";
   import Editor from "../editor/Editor.svelte";
+  import Breadcrumbs from "./Page/Breadcrumbs.svelte";
   import { getWorldPage, getWorldY, type WorldY } from "../lib/doc";
   import { routes } from "../lib/routes";
   import { loadWorlds } from "../lib/worldStorage";
-  import Breadcrumbs from "./Page/Breadcrumbs.svelte";
 
   export let worldId: string;
   export let pageId: string;
@@ -33,9 +34,13 @@
       })
       .catch((error) => (state = { error }));
   }
+
+  function pop() {
+    history.back();
+  }
 </script>
 
-<nav class="px-4 py-2">
+<div class="px-4">
   <details>
     <summary>Opciones</summary>
     <ul>
@@ -47,7 +52,13 @@
       </li>
     </ul>
   </details>
-
+</div>
+<nav
+  class="sticky top-0 z-10 flex h-10 items-stretch gap-4 bg-white text-neutral-700 shadow dark:bg-neutral-800 dark:text-neutral-200"
+>
+  <button title="Ir a la página anterior" on:click={pop}>
+    <ArrowBackIcon class="w-10 shrink-0 fill-current pl-2" />
+  </button>
   <Breadcrumbs {pageId} {worldId} />
 </nav>
 

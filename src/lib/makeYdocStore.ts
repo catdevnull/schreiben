@@ -1,11 +1,6 @@
-import {
-  derived,
-  type Readable,
-  type Subscriber,
-  type Unsubscriber,
-} from "svelte/store";
+import { derived, type Readable } from "svelte/store";
 import type { Doc, Transaction, XmlFragment } from "yjs";
-import { loadWorlds, worldsStore } from "./worldStorage";
+import { worldsStore } from "./worldStorage";
 import { getWorldPage, getWorldY } from "./doc";
 
 export function makeYdocStore<T>(

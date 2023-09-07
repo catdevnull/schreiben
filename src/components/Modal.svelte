@@ -1,5 +1,6 @@
 <script lang="ts">
   import CloseIcon from "eva-icons/fill/svg/close.svg";
+  import bodyScroll from "../lib/bodyScroll";
 
   export let onClose: () => void;
 
@@ -10,6 +11,8 @@
   function keydown(event: KeyboardEvent) {
     if (event.key === "Escape") onClose();
   }
+
+  $: $bodyScroll;
 </script>
 
 <div
@@ -20,10 +23,16 @@
   on:click={click}
   on:keydown={keydown}
 >
-  <div class="backdrop" />
+  <div class="fixed inset-0 bg-neutral-100/70 dark:bg-neutral-950/70" />
 
-  <div class="content-alignment" on:click={click} on:keydown={keydown}>
-    <div class="content shadow-xl">
+  <div
+    class="fixed inset-0 z-[269] flex h-screen items-center justify-center overflow-y-auto"
+    on:click={click}
+    on:keydown={keydown}
+  >
+    <div
+      class="h-full w-full overflow-y-auto rounded-2xl bg-neutral-100 px-5 py-4 shadow-xl dark:bg-neutral-800 sm:h-auto sm:w-auto"
+    >
       <div class="mb-3 flex items-center justify-between">
         <h3 class="text-2xl" id="modal-title">
           <slot name="title" />
@@ -108,30 +117,5 @@
   .modal {
     position: relative;
     z-index: 169;
-  }
-
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    background: var(--background);
-    opacity: 0.9;
-  }
-
-  .content-alignment {
-    display: flex;
-    height: 100vh;
-    position: fixed;
-    inset: 0;
-    z-index: 269;
-    align-items: center;
-    justify-content: center;
-    overflow-y: auto;
-  }
-
-  .content {
-    overflow-y: auto;
-    background: var(--background);
-    padding: 16px 20px;
-    border-radius: 16px;
   }
 </style>

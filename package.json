@@ -48,6 +48,7 @@
     "idb-keyval": "^6.2.1",
     "nanoid": "^4.0.2",
     "navaid": "^1.2.0",
+    "prosemirror-inputrules": "^1.2.1",
     "regexparam": "^2.0.1",
     "y-indexeddb": "^9.0.10",
     "y-prosemirror": "^1.2.1",

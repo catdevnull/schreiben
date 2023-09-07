@@ -15,7 +15,7 @@ export function floatingUi(
   options?: Partial<ComputePositionConfig>,
 ): Readable<Style> {
   return {
-    subscribe(run, invalidate) {
+    subscribe(run) {
       return autoUpdate(refEl, tooltipEl, () => {
         computePosition(refEl, tooltipEl, options).then(({ x, y }) => {
           run(`left: ${x}px; top: ${y}px`);

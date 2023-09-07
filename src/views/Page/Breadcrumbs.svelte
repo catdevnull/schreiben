@@ -1,13 +1,14 @@
 <script lang="ts">
   import { onMount, tick } from "svelte";
   import ChevronRight from "eva-icons/fill/svg/chevron-right.svg";
+  import ArrowDown from "eva-icons/fill/svg/arrow-down.svg";
   import { inject } from "regexparam";
   import breadcrumbs from "../../lib/breadcrumbs";
   import { pageStore } from "../../lib/makeYdocStore";
   import { derived } from "svelte/store";
   import { getTitle } from "../../lib/getTitle";
   import { routes } from "../../lib/routes";
-  import type { HTMLOlAttributes } from "svelte/elements";
+  import Modal from "../../components/Modal.svelte";
 
   export let worldId: string;
   export let pageId: string;
@@ -26,6 +27,7 @@
       ).subscribe(set);
     },
   );
+  $: currentTitle = $crumbsTitles[$crumbsTitles.length - 1];
 
   let breadcrumbsEl: HTMLDivElement;
   let breadcrumbsListEl: HTMLOListElement;
@@ -49,22 +51,51 @@
     resizeObserver.observe(breadcrumbsEl);
     return () => resizeObserver.disconnect();
   });
+
+  let breadcrumbsModalOpen = false;
 </script>
+
+<button
+  class="flex items-center overflow-hidden text-lg sm:hidden"
+  on:click={() => (breadcrumbsModalOpen = true)}
+>
+  <span class="overflow-hidden text-ellipsis whitespace-nowrap"
+    >{currentTitle}</span
+  >
+  <ArrowDown class="h-6 w-6 flex-shrink-0 fill-current" /></button
+>
+
+{#if breadcrumbsModalOpen}
+  <Modal onClose={() => (breadcrumbsModalOpen = false)}>
+    <ol class="h-full w-full">
+      {#each $pageBreadcrumbs as crumb, index}
+        <li>
+          <a
+            href={inject(routes.Page, { worldId, pageId: crumb })}
+            class="flex items-center text-ellipsis whitespace-nowrap p-4"
+            class:active-breadcrumb={crumb === pageId}
+            >{$crumbsTitles[index] || crumb}</a
+          >
+        </li>
+      {/each}
+    </ol>
+  </Modal>
+{/if}
 
 <!-- https://devdojo.com/pines/docs/breadcrumbs -->
 <div
-  class="flex justify-between overflow-x-auto rounded-md border border-neutral-200/60 px-3.5 py-1 dark:border-neutral-700"
+  class="hidden justify-between overflow-x-hidden leading-none sm:flex"
   bind:this={breadcrumbsEl}
 >
   <ol
-    class="inline-flex items-center space-x-1 text-xs text-neutral-500 dark:text-neutral-300 sm:mb-0 [&_.active-breadcrumb]:font-medium [&_.active-breadcrumb]:text-neutral-600 dark:[&_.active-breadcrumb]:text-neutral-200"
+    class="mb-0 inline-flex items-center space-x-1 text-ellipsis text-sm text-neutral-500 dark:text-neutral-300 [&_.active-breadcrumb]:font-medium [&_.active-breadcrumb]:text-neutral-600 dark:[&_.active-breadcrumb]:text-neutral-200"
     bind:this={breadcrumbsListEl}
   >
     {#each $pageBreadcrumbs as crumb, index}
       <li>
         <a
           href={inject(routes.Page, { worldId, pageId: crumb })}
-          class="font-norma inline-flex items-center text-ellipsis whitespace-nowrap py-1 focus:outline-none"
+          class="inline-flex items-center text-ellipsis whitespace-nowrap py-1 font-normal focus:outline-none"
           class:active-breadcrumb={crumb === pageId}
           >{$crumbsTitles[index] || crumb}</a
         >

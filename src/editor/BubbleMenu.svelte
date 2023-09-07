@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onDestroy, onMount, tick } from "svelte";
   import type { Writable } from "svelte/store";
   import type { EditorView } from "prosemirror-view";
   import type { EditorState } from "prosemirror-state";
@@ -10,6 +9,8 @@
   import StrikethroughIcon from "bootstrap-icons/icons/type-strikethrough.svg";
   import LinkIcon from "eva-icons/outline/svg/external-link-outline.svg";
   import InternalLinkIcon from "eva-icons/outline/svg/menu-arrow-outline.svg";
+  import H2Icon from "bootstrap-icons/icons/type-h2.svg";
+  import H3Icon from "bootstrap-icons/icons/type-h3.svg";
 
   import type { Command } from "./ps-utils";
   import {
@@ -23,34 +24,15 @@
   import Button from "./bubblemenu/Button.svelte";
   import Modal from "../components/Modal.svelte";
   import PagePicker from "../components/PagePicker.svelte";
+  import BottomFloatingBar from "../components/BottomFloatingBar.svelte";
   import type { WorldY } from "../lib/doc";
-  import Linking from "./menubar/Linking.svelte";
+  import Linking from "./bubblemenu/Linking.svelte";
+  import HeadingButton from "./bubblemenu/HeadingButton.svelte";
 
   export let view: EditorView;
   export let state: EditorState;
   export let worldY: WorldY;
   export let editingLink: Writable<false | "new" | "selection">;
-
-  let changingProp:
-    | false
-    | { type: "link"; url: string }
-    | { type: "mark" }
-    | { type: "mark-custom"; color: string } = false;
-
-  let linkInputEl: HTMLElement;
-
-  $: {
-    if (state.selection.empty) {
-      changingProp = false;
-    }
-    if (changingProp && changingProp.type === "link") {
-      tick().then(() => {
-        linkInputEl.focus();
-      });
-    } else {
-      view.focus();
-    }
-  }
 
   function runCommand(command: Command) {
     command(state, view.dispatch);
@@ -86,30 +68,6 @@
   }
 
   const svgStyle = "width: 100%; height: 100%";
-
-  /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
-  let barStyle = "";
-  function updateBar() {
-    const viewport = window.visualViewport!;
-    // Since the bar is position: fixed we need to offset it by the
-    // visual viewport's offset from the layout viewport origin.
-    const offsetY = window.innerHeight - viewport.height - viewport.offsetTop;
-
-    barStyle = `
-left: ${viewport.offsetLeft}px;
-bottom: ${offsetY}px;
-transform: scale(${1 / viewport.scale});
-`;
-  }
-
-  onMount(() => {
-    window.visualViewport!.addEventListener("resize", updateBar);
-    window.visualViewport!.addEventListener("scroll", updateBar);
-  });
-  onDestroy(() => {
-    window.visualViewport!.removeEventListener("resize", updateBar);
-    window.visualViewport!.removeEventListener("scroll", updateBar);
-  });
 </script>
 
 {#if makingInternalLink}
@@ -119,55 +77,47 @@ transform: scale(${1 / viewport.scale});
   </Modal>
 {/if}
 
-<div class="floating z-40" style={barStyle}>
+<BottomFloatingBar>
   <Linking {state} />
-  <div class="bubble" hidden={state.selection.empty}>
-    {#if changingProp === false}
-      <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}
-        ><BoldIcon style={svgStyle} /></SimpleMarkItem
-      >
-      <SimpleMarkItem {view} {state} type={view.state.schema.marks.em}
-        ><ItalicIcon style={svgStyle} /></SimpleMarkItem
-      >
-      <SimpleMarkItem {view} {state} type={view.state.schema.marks.underline}
-        ><UnderlineIcon style={svgStyle} /></SimpleMarkItem
-      >
-      <SimpleMarkItem
-        {view}
-        {state}
-        type={view.state.schema.marks.strikethrough}
-        ><StrikethroughIcon style={svgStyle} /></SimpleMarkItem
-      >
-      <Button
-        active={markIsActive(state, view.state.schema.marks.link)}
-        onClick={startEditingLink}><LinkIcon style={svgStyle} /></Button
-      >
-      <Button
-        active={markIsActive(state, view.state.schema.marks.internal_link)}
-        onClick={startMakingInternalLink}
-        ><InternalLinkIcon style={svgStyle} /></Button
-      >
-    {/if}
+  <div class="bubble flex items-center" hidden={state.selection.empty}>
+    <SimpleMarkItem {view} {state} type={view.state.schema.marks.strong}>
+      <BoldIcon style={svgStyle} />
+    </SimpleMarkItem>
+    <SimpleMarkItem {view} {state} type={view.state.schema.marks.em}>
+      <ItalicIcon style={svgStyle} />
+    </SimpleMarkItem>
+    <SimpleMarkItem {view} {state} type={view.state.schema.marks.underline}>
+      <UnderlineIcon style={svgStyle} />
+    </SimpleMarkItem>
+    <SimpleMarkItem {view} {state} type={view.state.schema.marks.strikethrough}>
+      <StrikethroughIcon style={svgStyle} />
+    </SimpleMarkItem>
+    <Button
+      active={markIsActive(state, view.state.schema.marks.link)}
+      onClick={startEditingLink}
+    >
+      <LinkIcon style={svgStyle} />
+    </Button>
+    <Button
+      active={markIsActive(state, view.state.schema.marks.internal_link)}
+      onClick={startMakingInternalLink}
+    >
+      <InternalLinkIcon style={svgStyle} />
+    </Button>
+
+    <span class="mx-2 block h-6 border-r border-neutral-400" />
+
+    <HeadingButton {view} {state} level={2}>
+      <H2Icon style={svgStyle} />
+    </HeadingButton>
+    <HeadingButton {view} {state} level={3}>
+      <H3Icon style={svgStyle} />
+    </HeadingButton>
   </div>
-</div>
+</BottomFloatingBar>
 
 <style>
-  .floating {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    padding: 0rem;
-    /* https://wicg.github.io/visual-viewport/examples/fixed-to-keyboard.html */
-    transform-origin: left bottom;
-
-    width: 100%;
-  }
-
   .bubble {
-    display: flex;
-
     background: var(--background);
     border-top: 1px solid var(--accent-bg);
     width: 100%;
