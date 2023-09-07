@@ -69,11 +69,16 @@
   <Modal onClose={() => (breadcrumbsModalOpen = false)}>
     <ol class="h-full w-full">
       {#each $pageBreadcrumbs as crumb, index}
-        <li>
+        <li
+          class="flex items-center overflow-hidden text-ellipsis whitespace-nowrap"
+        >
+          {#if index !== 0}
+            <span aria-hidden="true" class="text-lg">↪</span>
+          {/if}
           <a
             href={inject(routes.Page, { worldId, pageId: crumb })}
             on:click={() => ((breadcrumbsModalOpen = false), true)}
-            class="flex items-center text-ellipsis whitespace-nowrap p-4"
+            class="overflow-hidden text-ellipsis whitespace-nowrap py-2 pl-4 text-lg"
             class:active-breadcrumb={crumb === pageId}
             >{$crumbsTitles[index] || crumb}</a
           >
