@@ -72,6 +72,7 @@
         <li>
           <a
             href={inject(routes.Page, { worldId, pageId: crumb })}
+            on:click={() => ((breadcrumbsModalOpen = false), true)}
             class="flex items-center text-ellipsis whitespace-nowrap p-4"
             class:active-breadcrumb={crumb === pageId}
             >{$crumbsTitles[index] || crumb}</a
