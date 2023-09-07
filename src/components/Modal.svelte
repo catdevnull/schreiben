@@ -31,17 +31,21 @@
     on:keydown={keydown}
   >
     <div
-      class="h-full w-full overflow-y-auto rounded-2xl bg-neutral-100 px-5 py-4 shadow-xl dark:bg-neutral-800 sm:h-auto sm:w-auto"
+      class="h-full w-full overflow-y-auto bg-neutral-100 shadow-xl dark:bg-neutral-900 sm:h-auto sm:w-auto sm:rounded-2xl dark:sm:bg-neutral-800"
     >
-      <div class="mb-3 flex items-center justify-between">
-        <h3 class="text-2xl" id="modal-title">
+      <div
+        class="flex items-center justify-between border-b bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:sm:bg-neutral-700"
+      >
+        <h3 class="px-4 text-2xl font-medium" id="modal-title">
           <slot name="title" />
         </h3>
-        <button on:click={onClose}
+        <button class="px-3 py-2" on:click={onClose}
           ><CloseIcon class="h-10 w-10 fill-current" /></button
         >
       </div>
-      <slot />
+      <div class="p-4">
+        <slot />
+      </div>
       <!--<div
       class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
     >

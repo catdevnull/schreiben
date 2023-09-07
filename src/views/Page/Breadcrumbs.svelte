@@ -67,10 +67,11 @@
 
 {#if breadcrumbsModalOpen}
   <Modal onClose={() => (breadcrumbsModalOpen = false)}>
+    <svelte:fragment slot="title">Breadcrumbs</svelte:fragment>
     <ol class="h-full w-full">
       {#each $pageBreadcrumbs as crumb, index}
         <li
-          class="flex items-center overflow-hidden text-ellipsis whitespace-nowrap"
+          class="flex items-center overflow-hidden text-ellipsis whitespace-nowrap border-b dark:border-neutral-700"
         >
           {#if index !== 0}
             <span aria-hidden="true" class="text-lg">↪</span>
@@ -78,7 +79,7 @@
           <a
             href={inject(routes.Page, { worldId, pageId: crumb })}
             on:click={() => ((breadcrumbsModalOpen = false), true)}
-            class="overflow-hidden text-ellipsis whitespace-nowrap py-2 pl-4 text-lg"
+            class="w-full overflow-hidden text-ellipsis whitespace-nowrap py-2 pl-4 text-lg"
             class:active-breadcrumb={crumb === pageId}
             >{$crumbsTitles[index] || crumb}</a
           >
